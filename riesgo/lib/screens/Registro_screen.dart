@@ -25,6 +25,16 @@ class _RegistroScreenState extends State<RegistroScreen> {
   TextEditingController _emailTextController = TextEditingController();
   // ignore: prefer_final_fields, non_constant_identifier_names
   TextEditingController _nombreUsuarioTextController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _passwordTextController.dispose();
+    _emailTextController.dispose();
+    _nombreUsuarioTextController.dispose();
+    _confirmPasswordTextController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,7 +99,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           true,
                           _passwordTextController,
                           'Contraseña',
-                          3,
+                          5,
                           70,
                           'Demasiado corta'),
                       const SizedBox(
@@ -101,7 +111,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           true,
                           _confirmPasswordTextController,
                           'Contraseña',
-                          3,
+                          5,
                           70,
                           'Demasiado corta'),
                       const SizedBox(
