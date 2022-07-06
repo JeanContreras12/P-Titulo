@@ -16,6 +16,15 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   // ignore: prefer_final_fields
   TextEditingController _emailTextController = TextEditingController();
+
+  final formKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailTextController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,31 +57,77 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
           ),
           child: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
-              child: Column(
-                children: <Widget>[
-                  const SizedBox(
-                    height: 20,
+                padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
+                child: Form(
+                  autovalidateMode: AutovalidateMode
+                      .onUserInteraction, //necesario para realizar la validacion de campos
+                  key: formKey,
+                  child: Column(
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      reutilizableEmailFormField(
+                          "Correo electronico",
+                          Icons.email_outlined,
+                          false,
+                          _emailTextController,
+                          'ejemplo@correo.com'),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      firebaseBoton2(context, "Restablecer contraseña", formKey,
+                          () {
+                        RecuperarContra();
+                      }),
+                    ],
                   ),
-                  reutilizableTextField(
-                      "Correo electronico",
-                      Icons.email_outlined,
-                      false,
-                      _emailTextController,
-                      'ejemplo@correo.com'),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  firebaseBoton(context, "Restablecer contraseña", () {
-                    FirebaseAuth.instance
-                        .sendPasswordResetEmail(
-                            email: _emailTextController.text)
-                        .then((value) => Navigator.of(context).pop());
-                  }),
-                ],
-              ),
-            ),
+                )),
           )),
     );
+  }
+
+  Future RecuperarContra() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailTextController.text)
+          .then((value) => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text(
+                    'In our kitchen',
+                    textAlign: TextAlign.center,
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: const [
+                        Text('Enlace enviado al correo electronico',
+                            textAlign: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                );
+              }));
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                'In our kitchen',
+                textAlign: TextAlign.center,
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const [
+                    Text('No se han encontrado usuarios',
+                        textAlign: TextAlign.center)
+                  ],
+                ),
+              ),
+            );
+          });
+    }
   }
 }

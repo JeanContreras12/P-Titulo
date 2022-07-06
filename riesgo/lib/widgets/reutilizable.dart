@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Registro_screen.dart';
 
@@ -8,32 +10,6 @@ Image logoWidget(String imageName) {
     fit: BoxFit.fitWidth,
     width: 240,
     height: 200,
-  );
-}
-
-TextField reutilizableTextField(String text, IconData icon, bool isPasswordType,
-    TextEditingController controller, String hint) {
-  return TextField(
-    controller: controller,
-    obscureText: isPasswordType,
-    enableSuggestions: !isPasswordType,
-    autocorrect: !isPasswordType,
-    cursorColor: Colors.black,
-    style: TextStyle(color: Colors.black.withOpacity(0.9)),
-    decoration: InputDecoration(
-        icon: Icon(icon, color: Colors.black),
-        hintText: hint,
-        labelText: text,
-        labelStyle: TextStyle(color: Colors.black.withOpacity(0.9)),
-        filled: true,
-        fillColor: Colors.black.withOpacity(0.3),
-        floatingLabelBehavior: FloatingLabelBehavior.never,
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30.0),
-            borderSide: const BorderSide(width: 0, style: BorderStyle.none))),
-    keyboardType: isPasswordType
-        ? TextInputType.visiblePassword
-        : TextInputType.emailAddress,
   );
 }
 
@@ -196,4 +172,38 @@ Container firebaseBoton2(
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)))),
     ),
   );
+}
+
+class MetodosdeAuth {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<String> registro({
+    required String nombreusuario,
+    required String email,
+    required String password,
+  }) async {
+    String res = "Ocurrio un error";
+    try {
+      if (email.isNotEmpty || password.isNotEmpty || nombreusuario.isNotEmpty) {
+        //registrar al usuario
+        UserCredential cred = await _auth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        //añadir los otros datos a la base de datos
+        print(cred.user!.uid);
+
+        await _firestore.collection('users').doc(cred.user!.uid).set({
+          'NombreUsuario': nombreusuario,
+          'uID': cred.user!.uid,
+          'Email': email,
+          'Seguidores': [],
+          'Seguidos': [],
+        });
+        res = "Exitoso";
+      }
+    } catch (error) {
+      res = error.toString();
+    }
+    return res;
+  }
 }

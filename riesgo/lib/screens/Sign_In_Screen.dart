@@ -23,6 +23,13 @@ class _SignInScreenState extends State<SignInScreen> {
   // ignore: prefer_final_fields
   TextEditingController _emailTextController = TextEditingController();
   @override
+  void dispose() {
+    super.dispose();
+    _passwordTextController.dispose();
+    _emailTextController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
@@ -68,19 +75,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     OlvidoContrasena(context),
                     firebaseBoton2(context, 'Iniciar sesion', formKey, () {
-                      FirebaseAuth.instance
-                          .signInWithEmailAndPassword(
-                              email: _emailTextController.text,
-                              password: _passwordTextController.text)
-                          .then((value) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const InicioScreen()));
-                      }).onError((error, stackTrace) {
-                        // ignore: avoid_print
-                        print("Error ${error.toString()}");
-                      });
+                      IniciarSesion();
                     }),
                     RegistroOpcion()
                   ],
@@ -129,5 +124,34 @@ class _SignInScreenState extends State<SignInScreen> {
                 builder: (context) => const ResetPasswordScreen())),
       ),
     );
+  }
+
+  Future IniciarSesion() async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: _emailTextController.text,
+              password: _passwordTextController.text)
+          .then((value) => Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const InicioScreen())));
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                'In our kitchen',
+                textAlign: TextAlign.center,
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const [
+                    Text('Usuario no registrado', textAlign: TextAlign.center)
+                  ],
+                ),
+              ),
+            );
+          });
+    }
   }
 }
