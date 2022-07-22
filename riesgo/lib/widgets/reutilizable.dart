@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 import 'dart:convert';
 import 'dart:ffi';
 import 'dart:typed_data';
 
+=======
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+<<<<<<< HEAD
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riesgo/models/user.dart' as model;
@@ -18,6 +22,16 @@ Image logoWidget(String imageName, double wid, double hei) {
     fit: BoxFit.fitWidth,
     width: wid,
     height: hei,
+=======
+import 'package:riesgo/screens/Registro_screen.dart';
+
+Image logoWidget(String imageName) {
+  return Image.asset(
+    imageName,
+    fit: BoxFit.fitWidth,
+    width: 240,
+    height: 200,
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
   );
 }
 
@@ -186,6 +200,7 @@ class MetodosdeAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+<<<<<<< HEAD
   Future<model.User> getUserDetails() async {
     User currentUser = _auth.currentUser!;
     DocumentSnapshot snap =
@@ -195,17 +210,26 @@ class MetodosdeAuth {
 
   Future<String> registro({
     required String username,
+=======
+  Future<String> registro({
+    required String nombreusuario,
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
     required String email,
     required String password,
   }) async {
     String res = "Ocurrio un error";
     try {
+<<<<<<< HEAD
       if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
+=======
+      if (email.isNotEmpty || password.isNotEmpty || nombreusuario.isNotEmpty) {
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
         //registrar al usuario
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         //añadir los otros datos a la base de datos
         print(cred.user!.uid);
+<<<<<<< HEAD
         model.User user = model.User(
           username: username,
           uid: cred.user!.uid,
@@ -224,10 +248,25 @@ class MetodosdeAuth {
       }
     } catch (error) {
       res = 'error';
+=======
+
+        await _firestore.collection('users').doc(cred.user!.uid).set({
+          'NombreUsuario': nombreusuario,
+          'uID': cred.user!.uid,
+          'Email': email,
+          'Seguidores': [],
+          'Seguidos': [],
+        });
+        res = "Exitoso";
+      }
+    } catch (error) {
+      res = error.toString();
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
     }
     return res;
   }
 }
+<<<<<<< HEAD
 
 pickimage(ImageSource source) async {
   final ImagePicker _imagePicker = ImagePicker();
@@ -245,3 +284,5 @@ showSnackBar(String content, BuildContext context) {
     ),
   );
 }
+=======
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5

@@ -71,6 +71,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.3.3+1"
+<<<<<<< HEAD
   crypto:
     dependency: transitive
     description:
@@ -78,6 +79,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.2"
+=======
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -282,6 +285,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.0"
+<<<<<<< HEAD
   nested:
     dependency: transitive
     description:
@@ -289,6 +293,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.0"
+=======
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
   path:
     dependency: transitive
     description:
@@ -303,6 +309,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+<<<<<<< HEAD
   provider:
     dependency: "direct main"
     description:
@@ -310,6 +317,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.3"
+=======
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
   sky_engine:
     dependency: transitive
     description: flutter
@@ -364,6 +373,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.1"
+<<<<<<< HEAD
   uuid:
     dependency: "direct main"
     description:
@@ -371,6 +381,8 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.6"
+=======
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
   vector_math:
     dependency: transitive
     description:
