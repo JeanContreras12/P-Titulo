@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "70419482088",
+    "project_id": "titulo-a5fe7",
+    "storage_bucket": "titulo-a5fe7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:70419482088:android:8761edd1e2f6b954ba505d",
+        "android_client_info": {
+          "package_name": "com.example.riesgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "70419482088-dlnm8pbuhce13oakn504vm19i9824r0s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnA-z3DEv9NqFl5MuaCBadJUGy_5kmwzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "70419482088-dlnm8pbuhce13oakn504vm19i9824r0s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
