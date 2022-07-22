@@ -3,7 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
-import 'package:riesgo/screens/utilidades/colores.dart';
+
+import 'package:riesgo/utilidades/colores.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -78,15 +79,58 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                       ),
                       firebaseBoton2(context, "Restablecer contraseña", formKey,
                           () {
-                        FirebaseAuth.instance
-                            .sendPasswordResetEmail(
-                                email: _emailTextController.text)
-                            .then((value) => Navigator.of(context).pop());
+                        RecuperarContra();
                       }),
                     ],
                   ),
                 )),
           )),
     );
+  }
+
+  Future RecuperarContra() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailTextController.text)
+          .then((value) => showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: const Text(
+                    'In our kitchen',
+                    textAlign: TextAlign.center,
+                  ),
+                  content: SingleChildScrollView(
+                    child: ListBody(
+                      children: const [
+                        Text(
+                            'Si la cuenta existe el enlace fue enviado al correo electronico',
+                            textAlign: TextAlign.center)
+                      ],
+                    ),
+                  ),
+                );
+              }));
+    } on FirebaseAuthException catch (e) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text(
+                'In our kitchen',
+                textAlign: TextAlign.center,
+              ),
+              content: SingleChildScrollView(
+                child: ListBody(
+                  children: const [
+                    Text(
+                        'Si la cuenta existe el enlace fue enviado al correo electronico',
+                        textAlign: TextAlign.center)
+                  ],
+                ),
+              ),
+            );
+          });
+    }
   }
 }

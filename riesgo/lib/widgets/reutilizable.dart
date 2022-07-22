@@ -1,15 +1,23 @@
+import 'dart:convert';
+import 'dart:ffi';
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:riesgo/models/user.dart' as model;
 import 'package:riesgo/screens/Registro_screen.dart';
+import 'package:riesgo/widgets/fb_storage.dart';
 
-Image logoWidget(String imageName) {
+Image logoWidget(String imageName, double wid, double hei) {
   return Image.asset(
     imageName,
     fit: BoxFit.fitWidth,
-    width: 240,
-    height: 200,
+    width: wid,
+    height: hei,
   );
 }
 
@@ -178,23 +186,62 @@ class MetodosdeAuth {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  Future<model.User> getUserDetails() async {
+    User currentUser = _auth.currentUser!;
+    DocumentSnapshot snap =
+        await _firestore.collection('users').doc(currentUser.uid).get();
+    return model.User.fromSnap(snap);
+  }
+
   Future<String> registro({
-    required String nombreusuario,
+    required String username,
     required String email,
     required String password,
-    required DateTime fecha,
   }) async {
     String res = "Ocurrio un error";
     try {
-      if (email.isNotEmpty || password.isNotEmpty || fecha != null) {
+      if (email.isNotEmpty || password.isNotEmpty || username.isNotEmpty) {
         //registrar al usuario
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
             email: email, password: password);
         //añadir los otros datos a la base de datos
+        print(cred.user!.uid);
+        model.User user = model.User(
+          username: username,
+          uid: cred.user!.uid,
+          email: email,
+          seguidores: [],
+          seguidos: [],
+          photoUrl:
+              'https://firebasestorage.googleapis.com/v0/b/titulo-a5fe7.appspot.com/o/FotoPerfil%2Fundef.jpg?alt=media&token=cd66cfb5-5e24-43fc-be7b-7d7b102cfc44',
+        );
+
+        await _firestore
+            .collection('users')
+            .doc(cred.user!.uid)
+            .set(user.toJson());
+        res = "Exitoso";
       }
     } catch (error) {
-      res = error.toString();
+      res = 'error';
     }
     return res;
   }
+}
+
+pickimage(ImageSource source) async {
+  final ImagePicker _imagePicker = ImagePicker();
+  XFile? _file = await _imagePicker.pickImage(source: source);
+  if (_file != null) {
+    return await _file.readAsBytes();
+  }
+  print('Ninguna imagen fue seleccionada');
+}
+
+showSnackBar(String content, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(content),
+    ),
+  );
 }

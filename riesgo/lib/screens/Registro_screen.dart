@@ -1,9 +1,8 @@
-// ignore_for_file: file_names
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
-import 'package:riesgo/screens/utilidades/colores.dart';
+import 'package:riesgo/utilidades/colores.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 
 class RegistroScreen extends StatefulWidget {
@@ -16,15 +15,14 @@ class RegistroScreen extends StatefulWidget {
 class _RegistroScreenState extends State<RegistroScreen> {
   final formKey = GlobalKey<FormState>();
 
-  // ignore: prefer_final_fields
-  TextEditingController _passwordTextController = TextEditingController();
-  // ignore: prefer_final_fields
-  TextEditingController _confirmPasswordTextController =
+  final TextEditingController _passwordTextController = TextEditingController();
+  final TextEditingController _confirmPasswordTextController =
       TextEditingController();
-  // ignore: prefer_final_fields
-  TextEditingController _emailTextController = TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
   // ignore: prefer_final_fields, non_constant_identifier_names
-  TextEditingController _nombreUsuarioTextController = TextEditingController();
+  final TextEditingController _nombreUsuarioTextController =
+      TextEditingController();
+  bool _Cargando = false;
 
   @override
   void dispose() {
@@ -99,7 +97,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           true,
                           _passwordTextController,
                           'Contraseña',
-                          5,
+                          6,
                           70,
                           'Demasiado corta'),
                       const SizedBox(
@@ -111,7 +109,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           true,
                           _confirmPasswordTextController,
                           'Contraseña',
-                          5,
+                          6,
                           70,
                           'Demasiado corta'),
                       const SizedBox(
@@ -120,8 +118,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       firebaseBoton2(context, 'Registrarse', formKey, () {
                         if (_passwordTextController.text ==
                             _confirmPasswordTextController.text) {
-                          FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
+                          MetodosdeAuth()
+                              .registro(
+                                  username: _nombreUsuarioTextController.text,
                                   email: _emailTextController.text,
                                   password: _passwordTextController.text)
                               .then((value) {
@@ -129,23 +128,26 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const InicioScreen()));
-                          }).onError((error, stackTrace) {
-                            // ignore: avoid_print
-                            AlertDialog(
-                              title: const Text(
-                                'In our kitchen',
-                                textAlign: TextAlign.center,
-                              ),
-                              content: SingleChildScrollView(
-                                child: ListBody(
-                                  children: const [
-                                    Text('Contraseñas diferentes',
-                                        textAlign: TextAlign.center)
-                                  ],
-                                ),
-                              ),
-                            );
+                                        const SignInScreen()));
+                          }).then((value) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'In our kitchen',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: const [
+                                          Text('Registro exitoso',
+                                              textAlign: TextAlign.center)
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
                           });
                         } else {
                           return showDialog(
@@ -153,13 +155,14 @@ class _RegistroScreenState extends State<RegistroScreen> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text(
-                                    'In our kitchen',
+                                    'Error en el registro',
                                     textAlign: TextAlign.center,
                                   ),
                                   content: SingleChildScrollView(
                                     child: ListBody(
                                       children: const [
-                                        Text('Contraseñas diferentes',
+                                        Text(
+                                            'Las contraseñas deben ser identicas',
                                             textAlign: TextAlign.center)
                                       ],
                                     ),
