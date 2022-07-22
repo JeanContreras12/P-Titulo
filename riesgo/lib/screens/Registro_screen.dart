@@ -1,10 +1,17 @@
+<<<<<<< HEAD
+=======
 // ignore_for_file: file_names
 
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
+<<<<<<< HEAD
+import 'package:riesgo/utilidades/colores.dart';
+=======
 import 'package:riesgo/screens/utilidades/colores.dart';
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
 import 'package:riesgo/widgets/reutilizable.dart';
 
 class RegistroScreen extends StatefulWidget {
@@ -17,6 +24,16 @@ class RegistroScreen extends StatefulWidget {
 class _RegistroScreenState extends State<RegistroScreen> {
   final formKey = GlobalKey<FormState>();
 
+<<<<<<< HEAD
+  final TextEditingController _passwordTextController = TextEditingController();
+  final TextEditingController _confirmPasswordTextController =
+      TextEditingController();
+  final TextEditingController _emailTextController = TextEditingController();
+  // ignore: prefer_final_fields, non_constant_identifier_names
+  final TextEditingController _nombreUsuarioTextController =
+      TextEditingController();
+  bool _Cargando = false;
+=======
   // ignore: prefer_final_fields
   TextEditingController _passwordTextController = TextEditingController();
   // ignore: prefer_final_fields
@@ -26,6 +43,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
   TextEditingController _emailTextController = TextEditingController();
   // ignore: prefer_final_fields, non_constant_identifier_names
   TextEditingController _nombreUsuarioTextController = TextEditingController();
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
 
   @override
   void dispose() {
@@ -123,8 +141,12 @@ class _RegistroScreenState extends State<RegistroScreen> {
                             _confirmPasswordTextController.text) {
                           MetodosdeAuth()
                               .registro(
+<<<<<<< HEAD
+                                  username: _nombreUsuarioTextController.text,
+=======
                                   nombreusuario:
                                       _nombreUsuarioTextController.text,
+>>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
                                   email: _emailTextController.text,
                                   password: _passwordTextController.text)
                               .then((value) {
