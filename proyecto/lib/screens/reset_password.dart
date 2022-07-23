@@ -3,7 +3,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
-import 'package:riesgo/screens/utilidades/colores.dart';
+
+import 'package:riesgo/utilidades/colores.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
@@ -102,7 +103,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   content: SingleChildScrollView(
                     child: ListBody(
                       children: const [
-                        Text('Enlace enviado al correo electronico',
+                        Text(
+                            'Si la cuenta existe el enlace fue enviado al correo electronico',
                             textAlign: TextAlign.center)
                       ],
                     ),
@@ -121,7 +123,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: const [
-                    Text('No se han encontrado usuarios',
+                    Text(
+                        'Si la cuenta existe el enlace fue enviado al correo electronico',
                         textAlign: TextAlign.center)
                   ],
                 ),
