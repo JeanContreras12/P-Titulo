@@ -27,11 +27,12 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-<<<<<<< HEAD
   uuid: ^3.0.6
   provider: ^6.0.3
-=======
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
+
+  uuid: ^3.0.6
+  provider: ^6.0.3
+
   cloud_firestore: ^3.2.1
   cupertino_icons: ^1.0.2
   email_validator: ^2.0.1
