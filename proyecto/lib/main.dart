@@ -1,10 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-<<<<<<< HEAD
+
 import 'package:provider/provider.dart';
 import 'package:riesgo/providers/user_provider.dart';
-=======
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
+
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 
 void main() async {
