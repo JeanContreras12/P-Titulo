@@ -69,22 +69,22 @@ class _PostearScreenState extends State<PostearScreen> {
               'Elige el formato',
             ),
             children: [
-              SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text(
-                  'Toma una foto',
-                  style: TextStyle(fontSize: 16),
-                ),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  Uint8List file = await pickimage(
-                    ImageSource.camera,
-                  );
-                  setState(() {
-                    _file = file;
-                  });
-                },
-              ),
+              // SimpleDialogOption(
+              //   padding: const EdgeInsets.all(20),
+              //   child: const Text(
+              //     'Toma una foto',
+              //     style: TextStyle(fontSize: 16),
+              //   ),
+              //   onPressed: () async {
+              //     Navigator.of(context).pop();
+              //     Uint8List file = await pickimage(
+              //       ImageSource.camera,
+              //     );
+              //     setState(() {
+              //       _file = file;
+              //     });
+              //   },
+              // ),
               SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
                 child: const Text(
@@ -93,7 +93,7 @@ class _PostearScreenState extends State<PostearScreen> {
                 ),
                 onPressed: () async {
                   Navigator.of(context).pop();
-                  Uint8List file = await pickimage(
+                  Uint8List? file = await pickimage(
                     ImageSource.gallery,
                   );
                   setState(() {

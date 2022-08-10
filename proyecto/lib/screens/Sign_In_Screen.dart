@@ -1,20 +1,13 @@
 // ignore_for_file: file_names
 
-<<<<<<< HEAD
 import 'package:cloud_firestore/cloud_firestore.dart';
-=======
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Registro_screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
 import 'package:riesgo/screens/reset_password.dart';
-<<<<<<< HEAD
 import 'package:riesgo/models/user.dart' as model;
 import 'package:riesgo/utilidades/colores.dart';
-=======
-import 'package:riesgo/screens/utilidades/colores.dart';
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
 import 'package:riesgo/widgets/reutilizable.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -57,11 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 key: formKey,
                 child: Column(
                   children: <Widget>[
-<<<<<<< HEAD
                     logoWidget("assets/logo-.png", 240, 200),
-=======
-                    logoWidget("assets/logo-.png"),
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
                     const SizedBox(
                       height: 30,
                     ),
@@ -145,11 +134,7 @@ class _SignInScreenState extends State<SignInScreen> {
           .signInWithEmailAndPassword(
               email: _emailTextController.text,
               password: _passwordTextController.text)
-<<<<<<< HEAD
           .then((value) => Navigator.pushReplacement(context,
-=======
-          .then((value) => Navigator.push(context,
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
               MaterialPageRoute(builder: (context) => const InicioScreen())));
     } on FirebaseAuthException catch (e) {
       showDialog(
@@ -163,11 +148,7 @@ class _SignInScreenState extends State<SignInScreen> {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: const [
-<<<<<<< HEAD
                     Text('Datos invalidos', textAlign: TextAlign.center)
-=======
-                    Text('Usuario no registrado', textAlign: TextAlign.center)
->>>>>>> 7b7824a15f9b710cb67966c8677c6f92c354acf5
                   ],
                 ),
               ),
