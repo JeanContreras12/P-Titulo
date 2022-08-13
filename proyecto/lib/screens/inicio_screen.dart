@@ -100,16 +100,6 @@ class _InicioScreenState extends State<InicioScreen> {
         ],
         onTap: navigationTapped,
       ),
-
-      // Container(
-      //   decoration: const BoxDecoration(
-      //     boxShadow: <BoxShadow>[
-      //       BoxShadow(
-      //           color: Colors.black54,
-      //           blurRadius: 15.0,
-      //           offset: Offset(0.0, 0.75))
-      //     ],
-      //   ),
     );
   }
 }

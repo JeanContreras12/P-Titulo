@@ -6,6 +6,7 @@ class User {
   final String uid;
   final List seguidores;
   final List seguidos;
+  final String description;
   final String photoUrl;
 
   const User({
@@ -14,6 +15,7 @@ class User {
     required this.uid,
     required this.seguidores,
     required this.seguidos,
+    required this.description,
     required this.photoUrl,
   });
 
@@ -24,6 +26,7 @@ class User {
         'email': email,
         'seguidores': seguidores,
         'seguidos': seguidos,
+        'description': description,
         'photoUrl': photoUrl,
       };
 
@@ -35,6 +38,7 @@ class User {
         uid: snapshot['uid'],
         seguidores: snapshot['seguidores'],
         seguidos: snapshot['seguidos'],
+        description: snapshot['description'],
         photoUrl: snapshot['photoUrl']);
   }
 }

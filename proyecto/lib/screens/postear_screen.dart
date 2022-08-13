@@ -141,21 +141,6 @@ class _PostearScreenState extends State<PostearScreen> {
           )
         : WillPopScope(
             child: Scaffold(
-              // leading: IconButton(
-              //   icon: const Icon(
-              //     Icons.exit_to_app,
-              //     color: Colors.black,
-              //     size: 40,
-              //   ),
-              //   onPressed: () {
-              //     FirebaseAuth.instance.signOut().then((value) {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const SignInScreen()));
-              //     });
-              //   },
-              // ),
               appBar: AppBar(
                 leading: IconButton(
                     onPressed: () {
