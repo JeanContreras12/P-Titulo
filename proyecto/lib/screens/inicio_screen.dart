@@ -56,6 +56,7 @@ class _InicioScreenState extends State<InicioScreen> {
         onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: CupertinoTabBar(
+        backgroundColor: Color.fromARGB(255, 231, 231, 231),
         items: [
           BottomNavigationBarItem(
             icon: Icon(

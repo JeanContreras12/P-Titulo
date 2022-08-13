@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
-import 'package:riesgo/utilidades/perfil_variables.dart';
+import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/follow_button.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
@@ -45,7 +45,8 @@ class _ProfileScreenState extends State<ProfileScreen>
           .get();
 
       postLen = postSnap.docs.length;
-      userData = userSnap.data()!;
+      userData = userSnap
+          .data()!; //USER DATA ES EL PERFIL QUE ESTAMOS VIENDO AHORA MISMO ES DECIR LOS DATOS DEL USUARIO DONDE ESTAMOS PARADOS
       followers = userSnap.data()!['seguidores'].length;
       following = userSnap.data()!['seguidos'].length;
       isFollowing = userSnap
@@ -63,6 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen>
 
   @override
   Widget build(BuildContext context) {
+    // ignore: no_leading_underscores_for_local_identifiers
     TabController _tabController = TabController(length: 2, vsync: this);
     return isLoading
         ? const Center(
@@ -70,26 +72,82 @@ class _ProfileScreenState extends State<ProfileScreen>
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.grey,
-              title: Text(''),
-              titleTextStyle: TextStyle(color: Colors.black, fontSize: 20),
+              backgroundColor: Color.fromARGB(255, 117, 116, 116),
+              title: const Text(''),
+              titleTextStyle:
+                  const TextStyle(color: Colors.black, fontSize: 20),
               centerTitle: false,
               elevation: 0,
-              // leading: IconButton(
-              //   icon: const Icon(
-              //     Icons.exit_to_app,
-              //     color: Colors.black,
-              //     size: 40,
-              //   ),
-              //   onPressed: () {
-              //     FirebaseAuth.instance.signOut().then((value) {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const SignInScreen()));
-              //     });
-              //   },
-              // ),
+              actions: [
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  //icono derecho 3 puntos con opciones
+                  onPressed: () {
+                    if (widget.uid == FirebaseAuth.instance.currentUser!.uid) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            shrinkWrap: true,
+                            children: [
+                              'Cerrar sesión',
+                            ]
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () {
+                                      FirebaseAuth.instance.signOut().then(
+                                        (value) {
+                                          Navigator.of(context).pushReplacement(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const SignInScreen()));
+                                        },
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 16),
+                                      child: Text(e),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            shrinkWrap: true,
+                            children: [
+                              'Enviar mensaje',
+                            ]
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 16),
+                                      child: Text(e),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
             body: ListView(
               children: [
@@ -125,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     FirebaseAuth.instance.currentUser!.uid ==
                                             widget.uid
-                                        ? FollowButton(
+                                        ? const FollowButton(
                                             backgroundcolor: Color.fromARGB(
                                                 255, 84, 173, 246),
                                             borderColor: Colors.grey,
@@ -138,13 +196,38 @@ class _ProfileScreenState extends State<ProfileScreen>
                                                 borderColor: Colors.grey,
                                                 text: 'Dejar de seguir',
                                                 textColor: Colors.white,
+                                                function: () async {
+                                                  await FirestoreMethods()
+                                                      .followUser(
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                    userData['uid'],
+                                                  );
+                                                  setState(() {
+                                                    isFollowing = false;
+                                                    followers--;
+                                                  });
+                                                },
                                               )
                                             : FollowButton(
-                                                backgroundcolor: Color.fromARGB(
-                                                    255, 84, 173, 246),
+                                                backgroundcolor:
+                                                    const Color.fromARGB(
+                                                        255, 84, 173, 246),
                                                 borderColor: Colors.grey,
                                                 text: 'Seguir',
                                                 textColor: Colors.white,
+                                                function: () async {
+                                                  await FirestoreMethods()
+                                                      .followUser(
+                                                    FirebaseAuth.instance
+                                                        .currentUser!.uid,
+                                                    userData['uid'],
+                                                  );
+                                                  setState(() {
+                                                    isFollowing = true;
+                                                    followers++;
+                                                  });
+                                                },
                                               )
                                   ],
                                 ),

@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:riesgo/providers/user_provider.dart';
 import 'package:riesgo/screens/comentarios_screen.dart';
+import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/guardado_animacion.dart';
 import 'package:riesgo/models/user.dart' as model;
@@ -40,15 +41,24 @@ class PostFireBase extends StatelessWidget {
                     padding: const EdgeInsets.only(
                       left: 8,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          snap['username'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                    child: InkWell(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ProfileScreen(
+                            uid: snap['uid'],
+                          ),
                         ),
-                      ],
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            snap['username'],
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

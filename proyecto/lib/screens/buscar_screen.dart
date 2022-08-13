@@ -13,6 +13,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
   bool isShowUsers = false;
+  bool buscando = false;
 
   @override
   void dispose() {
@@ -25,12 +26,16 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: Colors.orange),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         title: TextFormField(
           controller: searchController,
           decoration: InputDecoration(
             fillColor: Colors.grey,
             filled: true,
-            contentPadding: const EdgeInsets.all(16),
+            contentPadding: const EdgeInsets.all(13),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -65,10 +70,13 @@ class _SearchScreenState extends State<SearchScreen> {
                   itemCount: (snapshot.data! as dynamic).docs.length,
                   itemBuilder: (context, index) {
                     return InkWell(
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
                           builder: (context) => ProfileScreen(
-                              uid: (snapshot.data! as dynamic).docs[index]
-                                  ['uid']))),
+                            uid: (snapshot.data! as dynamic).docs[index]['uid'],
+                          ),
+                        ),
+                      ),
                       child: ListTile(
                         leading: CircleAvatar(
                           backgroundImage: NetworkImage(
