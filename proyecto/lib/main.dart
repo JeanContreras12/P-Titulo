@@ -51,20 +51,5 @@ class MyApp extends StatelessWidget {
         ),
       ),
     );
-
-    // return MultiProvider(
-    //   providers: [
-    //     ChangeNotifierProvider(
-    //       create: (_) => Userprovider(),
-    //     ),
-    //   ],
-    //   child: MaterialApp(
-    //     debugShowCheckedModeBanner: false,
-    //     theme: ThemeData(
-    //       primarySwatch: Colors.blue,
-    //     ),
-    //     home: const SignInScreen(),
-    //   ),
-    // );
   }
 }

@@ -1,15 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
+import 'package:riesgo/screens/cambiar_contra_screen.dart';
+import 'package:riesgo/screens/edit_perfil.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/follow_button.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ProfileScreen extends StatefulWidget {
-  final String uid;
-  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
+  String uid;
+  ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -18,6 +21,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen>
     with TickerProviderStateMixin {
   var userData = {};
+  var userData2 = {};
   int postLen = 0;
   int followers = 0;
   int following = 0;
@@ -38,6 +42,10 @@ class _ProfileScreenState extends State<ProfileScreen>
           .collection('users')
           .doc(widget.uid)
           .get();
+      var userSnap2 = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser!.uid)
+          .get();
       // obteniendo el largo del posts
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
@@ -45,6 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           .get();
 
       postLen = postSnap.docs.length;
+      userData2 = userSnap2.data()!;
       userData = userSnap
           .data()!; //USER DATA ES EL PERFIL QUE ESTAMOS VIENDO AHORA MISMO ES DECIR LOS DATOS DEL USUARIO DONDE ESTAMOS PARADOS
       followers = userSnap.data()!['seguidores'].length;
@@ -83,7 +92,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                   icon: const Icon(Icons.menu),
                   //icono derecho 3 puntos con opciones
                   onPressed: () {
-                    if (widget.uid == FirebaseAuth.instance.currentUser!.uid) {
+                    if (userData2['uid'] == userData['uid']) {
                       showDialog(
                         context: context,
                         builder: (context) => Dialog(
@@ -92,20 +101,34 @@ class _ProfileScreenState extends State<ProfileScreen>
                               vertical: 16,
                             ),
                             shrinkWrap: true,
-                            children: [
-                              'Cerrar sesión',
-                            ]
+                            children: ['Cerrar sesión', 'Cambiar contraseña']
                                 .map(
                                   (e) => InkWell(
-                                    onTap: () {
-                                      FirebaseAuth.instance.signOut().then(
-                                        (value) {
-                                          Navigator.of(context).pushReplacement(
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const SignInScreen()));
-                                        },
-                                      );
+                                    onTap: () async {
+                                      if (e == 'Cerrar sesión') {
+                                        await FirestoreMethods().signOut();
+                                        FirebaseAuth.instance
+                                            .authStateChanges();
+                                        // Navigator.pop(context);
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const SignInScreen()),
+                                                (route) => false);
+                                        // Navigator.of(context).pushReplacement(
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             const SignInScreen()));
+                                      } else {
+                                        Navigator.pop(context);
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                ChangePassScreen(),
+                                          ),
+                                        );
+                                      }
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
@@ -157,13 +180,21 @@ class _ProfileScreenState extends State<ProfileScreen>
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            backgroundImage: NetworkImage(
-                              userData['photoUrl'],
-                            ),
-                            radius: 35,
-                          ),
+                          FutureBuilder(builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }
+                            return CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              backgroundImage: NetworkImage(
+                                userData['photoUrl'],
+                              ),
+                              radius: 35,
+                            );
+                          }),
                           Expanded(
                             flex: 1,
                             child: Column(
@@ -173,8 +204,10 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    buildColum(userData['username'],
-                                        userData['description']),
+                                    Flexible(
+                                      child: buildColum(userData['username'],
+                                          userData['description']),
+                                    ),
                                   ],
                                 ),
                                 Row(
@@ -183,12 +216,23 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   children: [
                                     FirebaseAuth.instance.currentUser!.uid ==
                                             widget.uid
-                                        ? const FollowButton(
+                                        ? FollowButton(
                                             backgroundcolor: Color.fromARGB(
                                                 255, 84, 173, 246),
                                             borderColor: Colors.grey,
                                             text: 'Editar Perfil',
                                             textColor: Colors.white,
+                                            function: () =>
+                                                Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditProfil(
+                                                        uid: FirebaseAuth
+                                                            .instance
+                                                            .currentUser!
+                                                            .uid),
+                                              ),
+                                            ),
                                           )
                                         : isFollowing
                                             ? FollowButton(

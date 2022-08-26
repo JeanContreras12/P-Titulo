@@ -1,7 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:riesgo/providers/user_provider.dart';
+import 'package:riesgo/screens/buscar_screen.dart';
+import 'package:riesgo/screens/feed_screen.dart';
+import 'package:riesgo/screens/postear_screen.dart';
+import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/utilidades/variables.dart';
 
 class InicioScreen extends StatefulWidget {
@@ -14,6 +19,7 @@ class InicioScreen extends StatefulWidget {
 class _InicioScreenState extends State<InicioScreen> {
   int _page = 0;
   late PageController pageController;
+  var user = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
@@ -49,7 +55,17 @@ class _InicioScreenState extends State<InicioScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: homeScreenItems,
+        children: homeScreenItems = [
+          FeedScreen(),
+          SearchScreen(),
+          PostearScreen(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          ),
+          Text('hola4'),
+          ProfileScreen(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          ),
+        ],
         physics:
             const NeverScrollableScrollPhysics(), //evita que se pueda cambiar de ventana arrastrando la pantalla hacia los lados
         controller: pageController,

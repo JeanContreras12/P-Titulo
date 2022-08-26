@@ -30,38 +30,60 @@ class PostFireBase extends StatelessWidget {
             ).copyWith(right: 0),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(
-                    snap['profImage'],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
+                FutureBuilder(builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return CircleAvatar(
+                    radius: 16,
+                    backgroundImage: NetworkImage(
+                      snap['profImage'],
                     ),
-                    child: InkWell(
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ProfileScreen(
-                            uid: snap['uid'],
-                          ),
-                        ),
+                  );
+                }),
+                FutureBuilder(builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8,
                       ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            snap['username'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                      child: FutureBuilder(builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProfileScreen(
+                                uid: snap['uid'],
+                              ),
+                            ),
                           ),
-                        ],
-                      ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snap['username'],
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 IconButton(
                   //icono derecho 3 puntos con opciones
                   onPressed: () {

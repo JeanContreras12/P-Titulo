@@ -35,6 +35,7 @@ class MetodosStorage {
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   //subir el post a firebase
   Future<String> uploadPost(
     String description,
@@ -152,5 +153,37 @@ class FirestoreMethods {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> ChangeProfilePic(
+      String uid, String file, String? nombre, String? description) async {
+    try {
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      // var snapshots = FirebaseFirestore.instance.collection('posts');
+      await _firestore.collection('users').doc(uid).update({'photoUrl': file});
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .update({'username': nombre});
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .update({'description': description});
+      // await snapshots.forEach((document) async {
+      //   print(document.toString());
+      // });
+      postSnap.docs.forEach((msgDoc) async {
+        await msgDoc.reference.update({'username': nombre});
+      });
+    } catch (e) {
+      print('Debe seleccionar una imagen para cambiar');
+    }
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }
