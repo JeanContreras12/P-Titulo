@@ -108,9 +108,8 @@ class _EditProfilState extends State<EditProfil> {
                 TextButton(
                   onPressed: (() {
                     final isValidForm = _formKey.currentState!.validate();
+
                     if (isValidForm) {
-                      print(description);
-                      print(nombre);
                       postImage(FirebaseAuth.instance.currentUser!.uid);
                     }
                   }),
@@ -121,114 +120,117 @@ class _EditProfilState extends State<EditProfil> {
                 ),
               ],
             ),
-            body: SafeArea(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                width: double.infinity,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    Stack(
-                      children: [
-                        _image != null
-                            ? CircleAvatar(
-                                radius: 64,
-                                //tiene que estar la imagen actual del usuario displayada aqui
-                                backgroundImage: MemoryImage(_image!),
-                              )
-                            : CircleAvatar(
-                                radius: 64,
-                                //tiene que estar la imagen actual del usuario displayada aqui
-                                backgroundImage:
-                                    NetworkImage(userData['photoUrl']),
-                                backgroundColor: Colors.red,
-                              ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              onPressed: selectImage,
-                              icon: const Icon(
-                                Icons.add_a_photo,
-                                color: Colors.red,
-                                size: 35,
-                              ),
-                            ),
-                            const Text(
-                              'Cambia tu foto de perfil',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        )
-                      ],
-                    ),
-                    Form(
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      key: _formKey,
-                      child: Column(
+            body: SingleChildScrollView(
+              child: SafeArea(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        height: 32,
+                      ),
+                      Stack(
                         children: [
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                              enableSuggestions: true,
-                              autocorrect: true,
-                              cursorColor: Colors.black,
-                              initialValue: userData['username'],
-                              decoration: const InputDecoration(
-                                labelText: 'Nombre',
-                                labelStyle: TextStyle(
-                                    color: Color.fromARGB(255, 125, 124, 124),
-                                    fontSize: 20),
+                          _image != null
+                              ? CircleAvatar(
+                                  radius: 64,
+                                  //tiene que estar la imagen actual del usuario displayada aqui
+                                  backgroundImage: MemoryImage(_image!),
+                                )
+                              : CircleAvatar(
+                                  radius: 64,
+                                  //tiene que estar la imagen actual del usuario displayada aqui
+                                  backgroundImage:
+                                      NetworkImage(userData['photoUrl']),
+                                  backgroundColor: Colors.red,
+                                ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                onPressed: selectImage,
+                                icon: const Icon(
+                                  Icons.add_a_photo,
+                                  color: Colors.red,
+                                  size: 35,
+                                ),
                               ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                if (value != null && value.length < 4) {
-                                  return 'Demasiado corto';
-                                } else if (value != null && value.length > 15) {
-                                  return 'Demasiado largo';
-                                } else {
-                                  nombre = value;
-                                  return null;
-                                }
-                              }),
-                          SizedBox(
-                            height: 30,
-                          ),
-                          TextFormField(
-                              enableSuggestions: true,
-                              autocorrect: true,
-                              cursorColor: Colors.black,
-                              initialValue: userData['description'],
-                              decoration: const InputDecoration(
-                                labelText: 'Descripción',
-                                labelStyle: TextStyle(
-                                    color: Color.fromARGB(255, 125, 124, 124),
-                                    fontSize: 20),
-                              ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator: (value) {
-                                if (value != null && value.length < 1) {
-                                  return 'Demasiado corto';
-                                } else if (value != null &&
-                                    value.length > 100) {
-                                  return 'Demasiado largo';
-                                } else {
-                                  description = value;
-                                  return null;
-                                }
-                              }),
+                              const Text(
+                                'Cambia tu foto de perfil',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          )
                         ],
                       ),
-                    )
-                  ],
+                      Form(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                                enableSuggestions: true,
+                                autocorrect: true,
+                                cursorColor: Colors.black,
+                                initialValue: userData['username'],
+                                decoration: const InputDecoration(
+                                  labelText: 'Nombre',
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 125, 124, 124),
+                                      fontSize: 20),
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value != null && value.length < 4) {
+                                    return 'Demasiado corto';
+                                  } else if (value != null &&
+                                      value.length > 15) {
+                                    return 'Demasiado largo';
+                                  } else {
+                                    nombre = value;
+                                    return null;
+                                  }
+                                }),
+                            SizedBox(
+                              height: 30,
+                            ),
+                            TextFormField(
+                                enableSuggestions: true,
+                                autocorrect: true,
+                                cursorColor: Colors.black,
+                                initialValue: userData['description'],
+                                decoration: const InputDecoration(
+                                  labelText: 'Descripción',
+                                  labelStyle: TextStyle(
+                                      color: Color.fromARGB(255, 125, 124, 124),
+                                      fontSize: 20),
+                                ),
+                                keyboardType: TextInputType.emailAddress,
+                                validator: (value) {
+                                  if (value != null && value.length < 1) {
+                                    return 'Demasiado corto';
+                                  } else if (value != null &&
+                                      value.length > 100) {
+                                    return 'Demasiado largo';
+                                  } else {
+                                    description = value;
+                                    return null;
+                                  }
+                                }),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),

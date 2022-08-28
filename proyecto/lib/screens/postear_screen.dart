@@ -147,10 +147,19 @@ class _PostearScreenState extends State<PostearScreen> {
     model.User? user = Provider.of<Userprovider>(context).getUser;
 
     return _file == null
-        ? Center(
-            child: IconButton(
-              icon: const Icon(Icons.upload),
-              onPressed: () => _selectImage(context),
+        ? Container(
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                centerTitle: true,
+                title: logoWidget("assets/logo-.png", 90, 70),
+              ),
+              body: Center(
+                child: IconButton(
+                  icon: const Icon(Icons.upload),
+                  onPressed: () => _selectImage(context),
+                ),
+              ),
             ),
           )
         : WillPopScope(

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:riesgo/providers/user_provider.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
-import 'package:riesgo/screens/feed_screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
 
 void main() async {
@@ -30,7 +29,7 @@ class MyApp extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.active) {
               if (snapshot.hasData) {
-                return InicioScreen();
+                return const InicioScreen();
               } else if (snapshot.hasError) {
                 return Center(
                   child: Text(

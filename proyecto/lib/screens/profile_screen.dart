@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
-import 'package:riesgo/screens/cambiar_contra_screen.dart';
+import 'package:riesgo/screens/comprobar_contra.dart';
 import 'package:riesgo/screens/edit_perfil.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/follow_button.dart';
@@ -11,8 +10,8 @@ import 'package:riesgo/widgets/reutilizable.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ProfileScreen extends StatefulWidget {
-  String uid;
-  ProfileScreen({Key? key, required this.uid}) : super(key: key);
+  final String uid;
+  const ProfileScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -109,7 +108,6 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         await FirestoreMethods().signOut();
                                         FirebaseAuth.instance
                                             .authStateChanges();
-                                        // Navigator.pop(context);
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(
@@ -125,7 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                ChangePassScreen(),
+                                                ChangePassScreen(
+                                                    uid: FirebaseAuth.instance
+                                                        .currentUser!.uid),
                                           ),
                                         );
                                       }
