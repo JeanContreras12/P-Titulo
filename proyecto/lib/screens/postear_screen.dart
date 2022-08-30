@@ -100,10 +100,7 @@ class _PostearScreenState extends State<PostearScreen> {
               'Elige el formato',
             ),
             children: [
-              SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text(
-                  'Selecciona desde la galería',
+
                   style: TextStyle(fontSize: 16),
                 ),
                 onPressed: () async {
