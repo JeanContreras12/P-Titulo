@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -14,18 +16,46 @@ import 'package:riesgo/widgets/reutilizable.dart';
 import 'package:riesgo/models/user.dart' as model;
 
 class PostearScreen extends StatefulWidget {
-  const PostearScreen({Key? key}) : super(key: key);
+  String uid;
+  PostearScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<PostearScreen> createState() => _PostearScreenState();
 }
 
 class _PostearScreenState extends State<PostearScreen> {
+  var userData = {};
   Uint8List? _file;
   final TextEditingController _descriptionTextController =
       TextEditingController();
 
   bool _isLoading = false;
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  getData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      var userSnap = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.uid)
+          .get();
+      userData = userSnap
+          .data()!; //USER DATA ES EL PERFIL QUE ESTAMOS VIENDO AHORA MISMO ES DECIR LOS DATOS DEL USUARIO DONDE ESTAMOS PARADOS
+
+      setState(() {});
+    } catch (e) {
+      showSnackBar(e.toString(), context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   void postImage(String uid, String username, String profImage) async {
     setState(() {
@@ -69,26 +99,7 @@ class _PostearScreenState extends State<PostearScreen> {
               'Elige el formato',
             ),
             children: [
-              // SimpleDialogOption(
-              //   padding: const EdgeInsets.all(20),
-              //   child: const Text(
-              //     'Toma una foto',
-              //     style: TextStyle(fontSize: 16),
-              //   ),
-              //   onPressed: () async {
-              //     Navigator.of(context).pop();
-              //     Uint8List file = await pickimage(
-              //       ImageSource.camera,
-              //     );
-              //     setState(() {
-              //       _file = file;
-              //     });
-              //   },
-              // ),
-              SimpleDialogOption(
-                padding: const EdgeInsets.all(20),
-                child: const Text(
-                  'Selecciona desde la galeria',
+
                   style: TextStyle(fontSize: 16),
                 ),
                 onPressed: () async {
@@ -130,32 +141,26 @@ class _PostearScreenState extends State<PostearScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final model.User? user = Provider.of<Userprovider>(context).getUser;
+    model.User? user = Provider.of<Userprovider>(context).getUser;
 
     return _file == null
-        ? Center(
-            child: IconButton(
-              icon: const Icon(Icons.upload),
-              onPressed: () => _selectImage(context),
+        ? Container(
+            child: Scaffold(
+              appBar: AppBar(
+                backgroundColor: Colors.white,
+                centerTitle: true,
+                title: logoWidget("assets/logo-.png", 90, 70),
+              ),
+              body: Center(
+                child: IconButton(
+                  icon: const Icon(Icons.upload),
+                  onPressed: () => _selectImage(context),
+                ),
+              ),
             ),
           )
         : WillPopScope(
             child: Scaffold(
-              // leading: IconButton(
-              //   icon: const Icon(
-              //     Icons.exit_to_app,
-              //     color: Colors.black,
-              //     size: 40,
-              //   ),
-              //   onPressed: () {
-              //     FirebaseAuth.instance.signOut().then((value) {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //               builder: (context) => const SignInScreen()));
-              //     });
-              //   },
-              // ),
               appBar: AppBar(
                 leading: IconButton(
                     onPressed: () {
@@ -166,7 +171,7 @@ class _PostearScreenState extends State<PostearScreen> {
                       color: Colors.black,
                     )),
                 title: const Text(
-                  "Publica tu receta",
+                  "Pública tu receta",
                   style: TextStyle(
                       color: Colors.black, fontSize: 20, fontFamily: 'Raleway'),
                 ),
@@ -174,12 +179,14 @@ class _PostearScreenState extends State<PostearScreen> {
                 backgroundColor: Colors.white,
                 actions: [
                   TextButton(
-                    onPressed: (() => postImage(
-                          user!.uid,
-                          user.username,
-                          user.photoUrl,
-                        )),
-                    child: const Text('Publicalo!'),
+                    onPressed: (() {
+                      postImage(
+                        user!.uid,
+                        userData['username'],
+                        user.photoUrl,
+                      );
+                    }),
+                    child: const Text('Publícalo!'),
                   )
                 ],
               ),

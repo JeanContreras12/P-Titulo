@@ -76,7 +76,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                           false,
                           _nombreUsuarioTextController,
                           'Nombre',
-                          3,
+                          4,
                           15,
                           'Demasiado corto'),
                       const SizedBox(

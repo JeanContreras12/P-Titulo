@@ -212,6 +212,7 @@ class MetodosdeAuth {
           email: email,
           seguidores: [],
           seguidos: [],
+          description: 'Nueva cuenta',
           photoUrl:
               'https://firebasestorage.googleapis.com/v0/b/titulo-a5fe7.appspot.com/o/FotoPerfil%2Fundef.jpg?alt=media&token=cd66cfb5-5e24-43fc-be7b-7d7b102cfc44',
         );

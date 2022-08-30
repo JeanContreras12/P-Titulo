@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:riesgo/providers/user_provider.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
+import 'package:riesgo/screens/inicio_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +24,31 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.active) {
+              if (snapshot.hasData) {
+                return const InicioScreen();
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(
+                      '${snapshot.error}'), //cambiar este error a uno que se muestre por pantalla
+                );
+              }
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              );
+            }
+            return const SignInScreen();
+          },
         ),
-        home: const SignInScreen(),
+
       ),
     );
   }

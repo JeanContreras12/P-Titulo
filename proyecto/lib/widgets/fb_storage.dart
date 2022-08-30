@@ -35,6 +35,7 @@ class MetodosStorage {
 
 class FirestoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   //subir el post a firebase
   Future<String> uploadPost(
     String description,
@@ -115,5 +116,74 @@ class FirestoreMethods {
         e.toString(),
       );
     }
+  }
+
+  //ELIMINAR UN POST
+
+  Future<void> deletePost(String postId) async {
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
+    } catch (err) {
+      print(err.toString());
+    }
+  }
+
+  Future<void> followUser(String uid, String followId) async {
+    try {
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(uid).get();
+
+      List following = (snap.data()! as dynamic)['seguidos'];
+
+      if (following.contains(followId)) {
+        await _firestore.collection('users').doc(followId).update({
+          'seguidores': FieldValue.arrayRemove([uid])
+        });
+        await _firestore.collection('users').doc(uid).update({
+          'seguidos': FieldValue.arrayRemove([followId])
+        });
+      } else {
+        await _firestore.collection('users').doc(followId).update({
+          'seguidores': FieldValue.arrayUnion([uid])
+        });
+        await _firestore.collection('users').doc(uid).update({
+          'seguidos': FieldValue.arrayUnion([followId])
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+  Future<void> ChangeProfilePic(
+      String uid, String file, String? nombre, String? description) async {
+    try {
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .get();
+      // var snapshots = FirebaseFirestore.instance.collection('posts');
+      await _firestore.collection('users').doc(uid).update({'photoUrl': file});
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .update({'username': nombre});
+      await _firestore
+          .collection('users')
+          .doc(uid)
+          .update({'description': description});
+      // await snapshots.forEach((document) async {
+      //   print(document.toString());
+      // });
+      postSnap.docs.forEach((msgDoc) async {
+        await msgDoc.reference.update({'username': nombre});
+      });
+    } catch (e) {
+      print('Debe seleccionar una imagen para cambiar');
+    }
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

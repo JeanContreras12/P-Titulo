@@ -5,9 +5,11 @@ class Post {
   final String username;
   final String uid;
   final String postId;
+  // ignore: prefer_typing_uninitialized_variables
   final datePublished;
   final String postUrl;
   final String profImage;
+  // ignore: prefer_typing_uninitialized_variables
   final saves;
 
   const Post({
