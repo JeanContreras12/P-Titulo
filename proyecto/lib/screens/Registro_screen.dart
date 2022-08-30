@@ -115,40 +115,62 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      firebaseBoton2(context, 'Registrarse', formKey, () {
+                      firebaseBoton2(context, 'Registrarse', formKey, () async {
                         if (_passwordTextController.text ==
                             _confirmPasswordTextController.text) {
-                          MetodosdeAuth()
-                              .registro(
-                                  username: _nombreUsuarioTextController.text,
-                                  email: _emailTextController.text,
-                                  password: _passwordTextController.text)
-                              .then((value) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SignInScreen()));
-                          }).then((value) {
-                            showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      'In our kitchen',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    content: SingleChildScrollView(
-                                      child: ListBody(
-                                        children: const [
-                                          Text('Registro exitoso',
-                                              textAlign: TextAlign.center)
-                                        ],
+                          try {
+                            var algo = await MetodosdeAuth().registro(
+                                username: _nombreUsuarioTextController.text,
+                                email: _emailTextController.text,
+                                password: _passwordTextController.text);
+                            if (algo == "fallo email") {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        'Error',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(color: Colors.red),
                                       ),
-                                    ),
-                                  );
-                                });
-                          });
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const [
+                                            Text('Correo ya registrado',
+                                                textAlign: TextAlign.center)
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            } else if (algo == 'Exitoso') {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const SignInScreen()));
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text(
+                                        'In our kitchen',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      content: SingleChildScrollView(
+                                        child: ListBody(
+                                          children: const [
+                                            Text('Registro exitoso',
+                                                textAlign: TextAlign.center)
+                                          ],
+                                        ),
+                                      ),
+                                    );
+                                  });
+                            }
+                          } catch (e) {
+                            print(e);
+                          }
                         } else {
                           return showDialog(
                               context: context,

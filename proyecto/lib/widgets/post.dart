@@ -163,15 +163,11 @@ class PostFireBase extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DefaultTextStyle(
-                  style: Theme.of(context)
-                      .textTheme
-                      .subtitle2!
-                      .copyWith(fontWeight: FontWeight.bold),
-                  child: Text(
-                    '${snap['saves'].length} guardado',
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
+                const Center(
+                  child: Text('Presiona para ver más',
+                      style: TextStyle(
+                          fontSize: 14,
+                          color: Color.fromARGB(255, 107, 107, 107))),
                 ),
                 Container(
                   width: double.infinity,
@@ -188,6 +184,25 @@ class PostFireBase extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                DefaultTextStyle(
+                    style: Theme.of(context)
+                        .textTheme
+                        .subtitle2!
+                        .copyWith(fontWeight: FontWeight.bold),
+                    child: snap['saves'].length == 0 || snap['saves'].length > 1
+                        ? Text(
+                            '${snap['saves'].length} guardados',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 105, 105, 105)),
+                          )
+                        : Text(
+                            '${snap['saves'].length} guardado',
+                            style: TextStyle(
+                                color: Color.fromARGB(255, 105, 105, 105)),
+                          )),
               ],
             ),
           ),

@@ -221,10 +221,26 @@ class MetodosdeAuth {
             .collection('users')
             .doc(cred.user!.uid)
             .set(user.toJson());
+
         res = "Exitoso";
       }
     } catch (error) {
-      res = 'error';
+      if (error.toString() ==
+          '[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
+        res = "fallo email";
+
+        ///FALTA VERIFICAR NOMBRE DE USUARIO YA USADO
+
+        var postSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .where(username, isEqualTo: username)
+            .get();
+        postSnap.docs.forEach((msgDoc) async {
+          print(msgDoc);
+        });
+      } else {
+        res = 'ERROR';
+      }
     }
     return res;
   }

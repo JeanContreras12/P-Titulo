@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:riesgo/models/user.dart';
@@ -154,10 +155,59 @@ class _PostearScreenState extends State<PostearScreen> {
                 centerTitle: true,
                 title: logoWidget("assets/logo-.png", 90, 70),
               ),
-              body: Center(
-                child: IconButton(
-                  icon: const Icon(Icons.upload),
-                  onPressed: () => _selectImage(context),
+              body: SingleChildScrollView(
+                child: Padding(
+                  padding: const EdgeInsets.all(25),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Comparte tus recetas',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 25),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 18, right: 13),
+                        child: Text(
+                            'Ayuda a otros usuarios a descubrir nuevas ideas',
+                            style: TextStyle(
+                                fontSize: 15,
+                                color: Color.fromARGB(255, 107, 107, 107))),
+                      ),
+                      Image.asset(
+                        "assets/receta.jpg",
+                        width: 180,
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      Center(
+                        child: ElevatedButton(
+                          onPressed: () => _selectImage(context),
+                          child: const Text(
+                            'Publica tu receta',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          ),
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.resolveWith((states) {
+                              if (states.contains(MaterialState.pressed)) {
+                                return Colors.black26;
+                              }
+                              return Color.fromARGB(255, 138, 230, 141);
+                            }),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -193,54 +243,57 @@ class _PostearScreenState extends State<PostearScreen> {
                   )
                 ],
               ),
-              body: Column(
-                children: [
-                  _isLoading
-                      ? const LinearProgressIndicator()
-                      : const Padding(
-                          padding: EdgeInsets.only(top: 0),
-                        ),
-                  const Divider(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          user!.photoUrl,
-                        ),
-                      ),
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: TextField(
-                          controller: _descriptionTextController,
-                          decoration: const InputDecoration(
-                            hintText: 'Describe los pasos para tu receta',
-                            border: InputBorder.none,
+              body: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _isLoading
+                        ? const LinearProgressIndicator()
+                        : const Padding(
+                            padding: EdgeInsets.only(top: 0),
                           ),
-                          maxLines: 8,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 45,
-                        width: 45,
-                        child: AspectRatio(
-                          aspectRatio: 487 / 451,
-                          child: Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: MemoryImage(_file!),
-                                fit: BoxFit.fill,
-                                alignment: FractionalOffset.topCenter,
+                    const Divider(),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 200,
+                          width: 200,
+                          child: AspectRatio(
+                            aspectRatio: 487 / 451,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: MemoryImage(_file!),
+                                  fit: BoxFit.fill,
+                                  alignment: FractionalOffset.center,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                      const Divider(),
-                    ],
-                  ),
-                ],
+                        const Divider(),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          height: 80,
+                          child: TextField(
+                            controller: _descriptionTextController,
+                            cursorColor: Colors.black,
+                            decoration: InputDecoration(
+                              hintText: 'Titulo. Ej: "Arroz con pollo"',
+                              filled: true,
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  borderSide: const BorderSide(
+                                      width: 0, style: BorderStyle.none)),
+                            ),
+                            maxLines: 8,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
             onWillPop: () async {
