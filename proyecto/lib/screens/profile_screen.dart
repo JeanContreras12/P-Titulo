@@ -80,7 +80,7 @@ class _ProfileScreenState extends State<ProfileScreen>
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Color.fromARGB(255, 117, 116, 116),
+              backgroundColor: const Color.fromARGB(255, 117, 116, 116),
               title: const Text(''),
               titleTextStyle:
                   const TextStyle(color: Colors.black, fontSize: 20),
@@ -217,8 +217,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                     FirebaseAuth.instance.currentUser!.uid ==
                                             widget.uid
                                         ? FollowButton(
-                                            backgroundcolor: Color.fromARGB(
-                                                255, 84, 173, 246),
+                                            backgroundcolor:
+                                                const Color.fromARGB(
+                                                    255, 84, 173, 246),
                                             borderColor: Colors.grey,
                                             text: 'Editar Perfil',
                                             textColor: Colors.white,
@@ -296,7 +297,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         labelColor: Colors.black,
                         unselectedLabelColor: Colors.grey,
                         indicator: DotIndicator(
-                          color: Color.fromARGB(255, 255, 6, 6),
+                          color: const Color.fromARGB(255, 255, 6, 6),
                           distanceFromCenter: 16,
                           radius: 3,
                           paintingStyle: PaintingStyle.fill,
@@ -344,11 +345,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   itemBuilder: (context, index) {
                                     DocumentSnapshot snap =
                                         (snapshot.data! as dynamic).docs[index];
-                                    return Container(
-                                      child: Image(
-                                        image: NetworkImage(snap['photoUrl']),
-                                        fit: BoxFit.cover,
-                                      ),
+                                    return Image(
+                                      image: NetworkImage(snap['photoUrl']),
+                                      fit: BoxFit.cover,
                                     );
                                   },
                                 );
@@ -380,11 +379,9 @@ class _ProfileScreenState extends State<ProfileScreen>
                                   itemBuilder: (context, index) {
                                     DocumentSnapshot snap =
                                         (snapshot.data! as dynamic).docs[index];
-                                    return Container(
-                                      child: Image(
-                                        image: NetworkImage(snap['photoUrl']),
-                                        fit: BoxFit.cover,
-                                      ),
+                                    return Image(
+                                      image: NetworkImage(snap['photoUrl']),
+                                      fit: BoxFit.cover,
                                     );
                                   },
                                 );

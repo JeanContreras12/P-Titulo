@@ -75,7 +75,8 @@ class PostFireBase extends StatelessWidget {
                             children: [
                               Text(
                                 snap['username'],
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -184,7 +185,7 @@ class PostFireBase extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 DefaultTextStyle(
@@ -195,12 +196,12 @@ class PostFireBase extends StatelessWidget {
                     child: snap['saves'].length == 0 || snap['saves'].length > 1
                         ? Text(
                             '${snap['saves'].length} guardados',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color.fromARGB(255, 105, 105, 105)),
                           )
                         : Text(
                             '${snap['saves'].length} guardado',
-                            style: TextStyle(
+                            style: const TextStyle(
                                 color: Color.fromARGB(255, 105, 105, 105)),
                           )),
               ],

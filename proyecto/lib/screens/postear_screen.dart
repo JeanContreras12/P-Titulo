@@ -1,17 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:fluttericon/font_awesome_icons.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/models/user.dart';
 import 'package:riesgo/providers/user_provider.dart';
-import 'package:riesgo/screens/inicio_screen.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 import 'package:riesgo/models/user.dart' as model;
@@ -96,11 +89,14 @@ class _PostearScreenState extends State<PostearScreen> {
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: Text(
+            title: const Text(
               'Elige el formato',
             ),
             children: [
-
+              SimpleDialogOption(
+                padding: const EdgeInsets.all(20),
+                child: const Text(
+                  'Selecciona desde la galería',
                   style: TextStyle(fontSize: 16),
                 ),
                 onPressed: () async {
@@ -145,66 +141,64 @@ class _PostearScreenState extends State<PostearScreen> {
     model.User? user = Provider.of<Userprovider>(context).getUser;
 
     return _file == null
-        ? Container(
-            child: Scaffold(
-              appBar: AppBar(
-                backgroundColor: Colors.white,
-                centerTitle: true,
-                title: logoWidget("assets/logo-.png", 90, 70),
-              ),
-              body: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        'Comparte tus recetas',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 25),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 18, right: 13),
-                        child: Text(
-                            'Ayuda a otros usuarios a descubrir nuevas ideas',
-                            style: TextStyle(
-                                fontSize: 15,
-                                color: Color.fromARGB(255, 107, 107, 107))),
-                      ),
-                      Image.asset(
-                        "assets/receta.jpg",
-                        width: 180,
-                      ),
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Center(
-                        child: ElevatedButton(
-                          onPressed: () => _selectImage(context),
-                          child: const Text(
-                            'Publica tu receta',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
-                          ),
-                          style: ButtonStyle(
-                            backgroundColor:
-                                MaterialStateProperty.resolveWith((states) {
-                              if (states.contains(MaterialState.pressed)) {
-                                return Colors.black26;
-                              }
-                              return Color.fromARGB(255, 138, 230, 141);
-                            }),
-                          ),
+        ? Scaffold(
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              centerTitle: true,
+              title: logoWidget("assets/logo-.png", 90, 70),
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(25),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      'Comparte tus recetas',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 18, right: 13),
+                      child: Text(
+                          'Ayuda a otros usuarios a descubrir nuevas ideas',
+                          style: TextStyle(
+                              fontSize: 15,
+                              color: Color.fromARGB(255, 107, 107, 107))),
+                    ),
+                    Image.asset(
+                      "assets/receta.jpg",
+                      width: 180,
+                    ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () => _selectImage(context),
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.resolveWith((states) {
+                            if (states.contains(MaterialState.pressed)) {
+                              return Colors.black26;
+                            }
+                            return const Color.fromARGB(255, 138, 230, 141);
+                          }),
+                        ),
+                        child: const Text(
+                          'Publica tu receta',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

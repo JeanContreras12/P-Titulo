@@ -7,6 +7,7 @@ import 'package:riesgo/models/user.dart' as model;
 import 'package:riesgo/widgets/fb_storage.dart';
 
 class CommentsScreen extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final snap;
   const CommentsScreen({Key? key, required this.snap}) : super(key: key);
 
@@ -28,7 +29,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.black,
         ),
         title: const Text(
@@ -75,7 +76,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   padding: const EdgeInsets.only(left: 19, right: 8),
                   child: TextField(
                     controller: _commentController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Comenta tu opinion',
                       border: InputBorder.none,
                     ),

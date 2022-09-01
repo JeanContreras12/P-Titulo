@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
-import 'package:riesgo/screens/inicio_screen.dart';
 import 'package:riesgo/utilidades/colores.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 
@@ -22,7 +20,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
   // ignore: prefer_final_fields, non_constant_identifier_names
   final TextEditingController _nombreUsuarioTextController =
       TextEditingController();
-  bool _Cargando = false;
 
   @override
   void dispose() {

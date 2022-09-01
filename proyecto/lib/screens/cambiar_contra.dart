@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
@@ -107,7 +105,7 @@ class _AuthChangePassScreenState extends State<AuthChangePassScreen> {
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
-                          if (value != null && value.length < 1) {
+                          if (value != null && value.isEmpty) {
                             return 'Demasiado corto';
                           } else if (value != null && value.length > 70) {
                             return 'Demasiado largo';
@@ -150,6 +148,7 @@ class _AuthChangePassScreenState extends State<AuthChangePassScreen> {
                                     'Vuelve a ingresar con las nuevas credenciales',
                                     context);
                               } else {
+                                // ignore: avoid_print
                                 print('FALLO EL CAMBIO DE CONTRA');
                               }
                             } else {
@@ -199,6 +198,7 @@ class _AuthChangePassScreenState extends State<AuthChangePassScreen> {
       await user.updatePassword(newPassword);
       success = true;
     } catch (e) {
+      // ignore: avoid_print
       print(e);
     }
     setState(() {

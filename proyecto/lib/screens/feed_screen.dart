@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/widgets/post.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
@@ -36,10 +35,8 @@ class FeedScreen extends StatelessWidget {
           return ListView.builder(
             itemCount:
                 snapshot.data!.docs.length, //obtener la cantidad de post hechos
-            itemBuilder: (context, index) => Container(
-              child: PostFireBase(
-                snap: snapshot.data!.docs[index].data(),
-              ),
+            itemBuilder: (context, index) => PostFireBase(
+              snap: snapshot.data!.docs[index].data(),
             ),
           );
         },

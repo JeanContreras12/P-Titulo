@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:riesgo/screens/inicio_screen.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/reutilizable.dart';
 
@@ -68,6 +67,7 @@ class _EditProfilState extends State<EditProfil> {
       }
       await FirestoreMethods()
           .ChangeProfilePic(uid, photoUrl, nombre, description);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       setState(() {
         isLoading = false;
@@ -99,7 +99,7 @@ class _EditProfilState extends State<EditProfil> {
           )
         : Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: const IconThemeData(color: Colors.black),
               backgroundColor: Colors.white,
               title: const Text('Editar perfil '),
               titleTextStyle:
@@ -113,7 +113,7 @@ class _EditProfilState extends State<EditProfil> {
                       postImage(FirebaseAuth.instance.currentUser!.uid);
                     }
                   }),
-                  child: Icon(
+                  child: const Icon(
                     Icons.check_circle_rounded,
                     size: 30.0,
                   ),
@@ -174,7 +174,7 @@ class _EditProfilState extends State<EditProfil> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             TextFormField(
@@ -200,7 +200,7 @@ class _EditProfilState extends State<EditProfil> {
                                     return null;
                                   }
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             TextFormField(
@@ -216,7 +216,7 @@ class _EditProfilState extends State<EditProfil> {
                                 ),
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
-                                  if (value != null && value.length < 1) {
+                                  if (value != null && value.isEmpty) {
                                     return 'Demasiado corto';
                                   } else if (value != null &&
                                       value.length > 100) {

@@ -100,7 +100,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
-                          if (value != null && value.length < 1) {
+                          if (value != null && value.isEmpty) {
                             return 'Demasiado corto';
                           } else if (value != null && value.length > 70) {
                             return 'Demasiado largo';
