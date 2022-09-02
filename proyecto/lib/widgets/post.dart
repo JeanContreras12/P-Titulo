@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:riesgo/providers/user_provider.dart';
 import 'package:riesgo/screens/comentarios_screen.dart';
+import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/widgets/fb_storage.dart';
 import 'package:riesgo/widgets/guardado_animacion.dart';
 import 'package:riesgo/models/user.dart' as model;
@@ -29,57 +30,120 @@ class PostFireBase extends StatelessWidget {
             ).copyWith(right: 0),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(
-                    snap['profImage'],
-                  ),
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 8,
+                FutureBuilder(builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return CircleAvatar(
+                    radius: 16,
+                    backgroundImage: NetworkImage(
+                      snap['profImage'],
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          snap['username'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
+                  );
+                }),
+                FutureBuilder(builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 8,
+                      ),
+                      child: FutureBuilder(builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ProfileScreen(
+                                uid: snap['uid'],
+                              ),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                snap['username'],
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                        );
+                      }),
                     ),
-                  ),
-                ),
+                  );
+                }),
                 IconButton(
                   //icono derecho 3 puntos con opciones
                   onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => Dialog(
-                        child: ListView(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
-                          shrinkWrap: true,
-                          children: [
-                            'Eliminar',
-                          ]
-                              .map(
-                                (e) => InkWell(
-                                  onTap: () {},
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 12, horizontal: 16),
-                                    child: Text(e),
+                    if (user!.uid == snap['uid']) {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            shrinkWrap: true,
+                            children: [
+                              'Eliminar',
+                            ]
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () async {
+                                      FirestoreMethods()
+                                          .deletePost(snap['postId']);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 16),
+                                      child: Text(e),
+                                    ),
                                   ),
-                                ),
-                              )
-                              .toList(),
+                                )
+                                .toList(),
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (context) => Dialog(
+                          child: ListView(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 16,
+                            ),
+                            shrinkWrap: true,
+                            children: [
+                              'Ver detalles',
+                            ]
+                                .map(
+                                  (e) => InkWell(
+                                    onTap: () {},
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 16),
+                                      child: Text(e),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          ),
+                        ),
+                      );
+                    }
                   },
                   icon: const Icon(Icons.more_vert),
                 ),

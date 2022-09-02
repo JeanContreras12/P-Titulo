@@ -24,6 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   // ignore: prefer_final_fields
   TextEditingController _emailTextController = TextEditingController();
+
   @override
   void dispose() {
     super.dispose();
