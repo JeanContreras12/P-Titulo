@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/providers/user_provider.dart';
-import 'package:riesgo/widgets/comment_card.dart';
+import 'package:riesgo/models/user_provider.dart';
+import 'package:riesgo/controller/comment_card.dart';
 import 'package:riesgo/models/user.dart' as model;
-import 'package:riesgo/widgets/fb_storage.dart';
+import 'package:riesgo/controller/fb_storage.dart';
 
 class CommentsScreen extends StatefulWidget {
   // ignore: prefer_typing_uninitialized_variables

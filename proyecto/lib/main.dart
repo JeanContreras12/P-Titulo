@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/providers/user_provider.dart';
+import 'package:riesgo/models/user_provider.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
 

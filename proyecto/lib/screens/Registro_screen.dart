@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/utilidades/colores.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({Key? key}) : super(key: key);
@@ -67,6 +68,42 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       const SizedBox(
                         height: 20,
                       ),
+                      // TextFormField(
+                      //   controller: _nombreUsuarioTextController,
+                      //   obscureText: false,
+                      //   enableSuggestions: true,
+                      //   autocorrect: true,
+                      //   cursorColor: Colors.black,
+                      //   style: TextStyle(color: Colors.black.withOpacity(0.9)),
+                      //   decoration: InputDecoration(
+                      //       icon: const Icon(Icons.person_outline,
+                      //           color: Colors.black),
+                      //       hintText: "Nombre",
+                      //       labelText: "Nombre",
+                      //       labelStyle:
+                      //           TextStyle(color: Colors.black.withOpacity(0.9)),
+                      //       filled: true,
+                      //       fillColor: Colors.black.withOpacity(0.3),
+                      //       floatingLabelBehavior: FloatingLabelBehavior.never,
+                      //       border: OutlineInputBorder(
+                      //           borderRadius: BorderRadius.circular(30.0),
+                      //           borderSide: const BorderSide(
+                      //               width: 0, style: BorderStyle.none))),
+                      //   keyboardType: TextInputType.emailAddress,
+                      //   validator: (value) {
+                      //     if (value != null && value.length < 4) {
+                      //       return 'Demasiado corto';
+                      //     } else if (value != null && value.length > 15) {
+                      //       return 'Demasiado largo';
+                      //     } else {
+                      //       return null;
+                      //     }
+                      //   },
+                      // ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
+
                       reutilizableTextFormField(
                           "Nombre de usuario",
                           Icons.person_outline,
@@ -115,58 +152,92 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       firebaseBoton2(context, 'Registrarse', formKey, () async {
                         if (_passwordTextController.text ==
                             _confirmPasswordTextController.text) {
-                          try {
-                            var algo = await MetodosdeAuth().registro(
-                                username: _nombreUsuarioTextController.text,
-                                email: _emailTextController.text,
-                                password: _passwordTextController.text);
-                            if (algo == "fallo email") {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                        'Error',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: Colors.red),
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const [
-                                            Text('Correo ya registrado',
-                                                textAlign: TextAlign.center)
-                                          ],
+                          bool nameUsed = false;
+                          var postSnap = await FirebaseFirestore.instance
+                              .collection('users')
+                              .where('username',
+                                  isEqualTo: _nombreUsuarioTextController.text)
+                              .get();
+                          postSnap.docs.forEach(
+                            (msgDoc) async {
+                              print(msgDoc['username']);
+                              if (msgDoc['username'] ==
+                                  _nombreUsuarioTextController.text) {
+                                nameUsed = true;
+                              }
+                            },
+                          );
+                          if (nameUsed != true) {
+                            try {
+                              var emailUser = await MetodosdeAuth().registro(
+                                  username: _nombreUsuarioTextController.text,
+                                  email: _emailTextController.text,
+                                  password: _passwordTextController.text);
+                              if (emailUser == "fallo email") {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          'Error',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(color: Colors.red),
                                         ),
-                                      ),
-                                    );
-                                  });
-                            } else if (algo == 'Exitoso') {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignInScreen()));
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text(
-                                        'In our kitchen',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      content: SingleChildScrollView(
-                                        child: ListBody(
-                                          children: const [
-                                            Text('Registro exitoso',
-                                                textAlign: TextAlign.center)
-                                          ],
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const [
+                                              Text('Correo ya registrado',
+                                                  textAlign: TextAlign.center)
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  });
+                                      );
+                                    });
+                              } else if (emailUser == 'Exitoso') {
+                                Navigator.pop(context);
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text(
+                                          'In our kitchen',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: SingleChildScrollView(
+                                          child: ListBody(
+                                            children: const [
+                                              Text('Registro exitoso',
+                                                  textAlign: TextAlign.center)
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
+                              }
+                            } catch (e) {
+                              print(e);
                             }
-                          } catch (e) {
-                            print(e);
+                          } else {
+                            return showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      'Error',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.red),
+                                    ),
+                                    content: SingleChildScrollView(
+                                      child: ListBody(
+                                        children: const [
+                                          Text(
+                                              'Nombre de usuario ya registrado',
+                                              textAlign: TextAlign.center)
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                });
                           }
                         } else {
                           return showDialog(
@@ -174,8 +245,9 @@ class _RegistroScreenState extends State<RegistroScreen> {
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text(
-                                    'Error en el registro',
+                                    'Error',
                                     textAlign: TextAlign.center,
+                                    style: TextStyle(color: Colors.red),
                                   ),
                                   content: SingleChildScrollView(
                                     child: ListBody(

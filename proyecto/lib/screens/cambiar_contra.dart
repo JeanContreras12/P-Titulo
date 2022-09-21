@@ -1,11 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/fb_storage.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class AuthChangePassScreen extends StatefulWidget {
-  const AuthChangePassScreen({Key? key}) : super(key: key);
+  final String passw;
+  const AuthChangePassScreen({Key? key, required this.passw}) : super(key: key);
 
   @override
   State<AuthChangePassScreen> createState() => _AuthChangePassScreenState();
@@ -130,26 +131,33 @@ class _AuthChangePassScreenState extends State<AuthChangePassScreen> {
                           onPressed: () async {
                             final isValidForm =
                                 _formKey.currentState!.validate();
-
+                            var user = await FirebaseAuth.instance.currentUser!;
                             if (isValidForm) {
-                              var cambioContra = await _changePassword(
-                                  _passwordTextController.text);
-                              if (cambioContra) {
-                                await FirestoreMethods().signOut();
-                                FirebaseAuth.instance.authStateChanges();
-                                // ignore: use_build_context_synchronously
-                                Navigator.of(context).pushAndRemoveUntil(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignInScreen()),
-                                    (route) => false);
-                                // ignore: use_build_context_synchronously
-                                showSnackBar(
-                                    'Vuelve a ingresar con las nuevas credenciales',
-                                    context);
+                              if (widget.passw !=
+                                  _passwordTextController.text) {
+                                var cambioContra = await _changePassword(
+                                    _passwordTextController.text);
+                                if (cambioContra) {
+                                  await FirestoreMethods().signOut();
+                                  FirebaseAuth.instance.authStateChanges();
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const SignInScreen()),
+                                      (route) => false);
+                                  // ignore: use_build_context_synchronously
+                                  showSnackBar(
+                                      'Vuelve a ingresar con las nuevas credenciales',
+                                      context);
+                                } else {
+                                  // ignore: avoid_print
+                                  print('FALLO EL CAMBIO DE CONTRA');
+                                }
                               } else {
-                                // ignore: avoid_print
-                                print('FALLO EL CAMBIO DE CONTRA');
+                                showSnackBar(
+                                    'Error la nueva contraseña no puede ser idéntica a la actual',
+                                    context);
                               }
                             } else {
                               // ignore: use_build_context_synchronously
@@ -204,6 +212,20 @@ class _AuthChangePassScreenState extends State<AuthChangePassScreen> {
     setState(() {
       isLoading = false;
     });
+    return success;
+  }
+
+  Future<bool> checkCurrentPass(String password) async {
+    bool success = false;
+    var user = await FirebaseAuth.instance.currentUser!;
+    var credentials = await EmailAuthProvider.credential(
+        email: user.email!, password: password);
+    try {
+      await user.reauthenticateWithCredential(credentials);
+      success = true;
+    } catch (e) {
+      success = false;
+    }
     return success;
   }
 }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/providers/user_provider.dart';
+import 'package:riesgo/models/user_provider.dart';
 import 'package:riesgo/screens/comentarios_screen.dart';
 import 'package:riesgo/screens/profile_screen.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
-import 'package:riesgo/widgets/guardado_animacion.dart';
+import 'package:riesgo/controller/fb_storage.dart';
+import 'package:riesgo/controller/guardado_animacion.dart';
 import 'package:riesgo/models/user.dart' as model;
 
 class PostFireBase extends StatelessWidget {

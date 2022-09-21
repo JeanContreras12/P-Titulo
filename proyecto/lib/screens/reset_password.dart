@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:riesgo/utilidades/colores.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);

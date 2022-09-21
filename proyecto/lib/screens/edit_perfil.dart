@@ -3,8 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/fb_storage.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class EditProfil extends StatefulWidget {
   final String uid;
@@ -106,11 +106,46 @@ class _EditProfilState extends State<EditProfil> {
                   const TextStyle(color: Colors.black, fontSize: 20),
               actions: [
                 TextButton(
-                  onPressed: (() {
+                  onPressed: (() async {
+                    bool nameUsed = false;
+                    var postSnap = await FirebaseFirestore.instance
+                        .collection('users')
+                        .where('username', isEqualTo: nombre)
+                        .get();
+                    postSnap.docs.forEach(
+                      (msgDoc) async {
+                        print(msgDoc['username']);
+                        if (msgDoc['username'] == nombre) {
+                          nameUsed = true;
+                        }
+                      },
+                    );
                     final isValidForm = _formKey.currentState!.validate();
 
                     if (isValidForm) {
-                      postImage(FirebaseAuth.instance.currentUser!.uid);
+                      if (nameUsed != true) {
+                        postImage(FirebaseAuth.instance.currentUser!.uid);
+                      } else {
+                        return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                  'Error',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                content: SingleChildScrollView(
+                                  child: ListBody(
+                                    children: const [
+                                      Text('Nombre de usuario ya registrado',
+                                          textAlign: TextAlign.center)
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      }
                     }
                   }),
                   child: const Icon(
@@ -217,7 +252,7 @@ class _EditProfilState extends State<EditProfil> {
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
                                   if (value != null && value.isEmpty) {
-                                    return 'Demasiado corto';
+                                    return 'No debe estar vacío';
                                   } else if (value != null &&
                                       value.length > 100) {
                                     return 'Demasiado largo';

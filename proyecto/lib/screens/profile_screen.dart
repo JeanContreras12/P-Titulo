@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/screens/comprobar_contra.dart';
 import 'package:riesgo/screens/edit_perfil.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
-import 'package:riesgo/widgets/follow_button.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/fb_storage.dart';
+import 'package:riesgo/controller/follow_button.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ProfileScreen extends StatefulWidget {

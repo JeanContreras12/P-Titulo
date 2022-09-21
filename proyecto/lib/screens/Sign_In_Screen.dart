@@ -6,7 +6,7 @@ import 'package:riesgo/screens/Registro_screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
 import 'package:riesgo/screens/reset_password.dart';
 import 'package:riesgo/utilidades/colores.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);

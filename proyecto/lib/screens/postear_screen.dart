@@ -4,9 +4,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/providers/user_provider.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/models/user_provider.dart';
+import 'package:riesgo/controller/fb_storage.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 import 'package:riesgo/models/user.dart' as model;
 
 class PostearScreen extends StatefulWidget {
@@ -215,7 +215,7 @@ class _PostearScreenState extends State<PostearScreen> {
                       color: Colors.black,
                     )),
                 title: const Text(
-                  "Pública tu receta",
+                  "Publica tu receta",
                   style: TextStyle(
                       color: Colors.black, fontSize: 20, fontFamily: 'Raleway'),
                 ),
@@ -230,7 +230,7 @@ class _PostearScreenState extends State<PostearScreen> {
                         user.photoUrl,
                       );
                     }),
-                    child: const Text('Publícalo!'),
+                    child: const Text('¡Publícalo!'),
                   )
                 ],
               ),
@@ -271,7 +271,7 @@ class _PostearScreenState extends State<PostearScreen> {
                             controller: _descriptionTextController,
                             cursorColor: Colors.black,
                             decoration: InputDecoration(
-                              hintText: 'Titulo. Ej: "Arroz con pollo"',
+                              hintText: 'Título. Ej: "Arroz con pollo"',
                               filled: true,
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30.0),
