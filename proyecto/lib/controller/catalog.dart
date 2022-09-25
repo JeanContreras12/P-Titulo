@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:riesgo/screens/comentarios_screen.dart';
+import 'package:riesgo/screens/detalle_receta.dart';
 import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/controller/fb_storage.dart';
 import 'package:riesgo/controller/guardado_animacion.dart';
@@ -44,7 +45,7 @@ class CatalogFireBase extends StatelessWidget {
                             child: CircularProgressIndicator(),
                           );
                         }
-                        return InkWell(
+                        return Center(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,7 +53,9 @@ class CatalogFireBase extends StatelessWidget {
                               Text(
                                 snap['titulo'],
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 30,
+                                ),
                               ),
                             ],
                           ),
@@ -65,63 +68,29 @@ class CatalogFireBase extends StatelessWidget {
             ),
             //IMG
           ),
-          // SizedBox(
-          //   height: MediaQuery.of(context).size.height * 0.35,
-          //   width: double.infinity,
-          //   child: Image.network(snap['photoUrl']),
-          // ),
-          // //descripcion
-          // Container(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16),
-          //   child: Column(
-          //     mainAxisSize: MainAxisSize.min,
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: [
-          //       const Center(
-          //         child: Text('Presiona para ver más',
-          //             style: TextStyle(
-          //                 fontSize: 14,
-          //                 color: Color.fromARGB(255, 107, 107, 107))),
-          //       ),
-          //       Container(
-          //         width: double.infinity,
-          //         padding: const EdgeInsets.only(top: 8),
-          //         child: RichText(
-          //           text: TextSpan(
-          //             style: const TextStyle(color: Colors.black),
-          //             children: [
-          //               TextSpan(
-          //                 text: snap['description'],
-          //                 style: const TextStyle(fontWeight: FontWeight.bold),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //       const SizedBox(
-          //         height: 10,
-          //       ),
-          //       DefaultTextStyle(
-          //           style: Theme.of(context)
-          //               .textTheme
-          //               .subtitle2!
-          //               .copyWith(fontWeight: FontWeight.bold),
-          //           child: snap['saves'].length == 0 || snap['saves'].length > 1
-          //               ? Text(
-          //                   '${snap['saves'].length} guardados',
-          //                   style: const TextStyle(
-          //                       color: Color.fromARGB(255, 105, 105, 105)),
-          //                 )
-          //               : Text(
-          //                   '${snap['saves'].length} guardado',
-          //                   style: const TextStyle(
-          //                       color: Color.fromARGB(255, 105, 105, 105)),
-          //                 )),
-          //     ],
-          //   ),
-          // ),
+          const SizedBox(
+            height: 20,
+          ),
 
-          //Seccion de barra inferior (comentarios, etc)
+          SizedBox(
+            height: MediaQuery.of(context).size.height * 0.35,
+            width: double.infinity,
+            child: IconButton(
+              icon: Image.network(snap['photoUrl']),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DetalleRecetaScreen(snap: snap),
+                  ),
+                );
+              },
+            ),
+          ),
+
+          const Divider(
+            color: Colors.black,
+            thickness: 7,
+          ),
         ],
       ),
     );
