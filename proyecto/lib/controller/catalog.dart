@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:riesgo/screens/comentarios_screen.dart';
 import 'package:riesgo/screens/detalle_receta.dart';
-import 'package:riesgo/screens/profile_screen.dart';
-import 'package:riesgo/controller/fb_storage.dart';
-import 'package:riesgo/controller/guardado_animacion.dart';
 
 class CatalogFireBase extends StatelessWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final snap;
   const CatalogFireBase({Key? key, required this.snap}) : super(key: key);
 

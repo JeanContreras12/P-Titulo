@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:riesgo/screens/buscador_receta_screen.dart';
 import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/screens/recetas_screen.dart';
 
@@ -94,10 +95,6 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.orange),
-            onPressed: () {},
-          ),
           title: TextFormField(
             controller: searchController,
             decoration: InputDecoration(
@@ -111,7 +108,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Icons.search,
                 color: Colors.black,
               ),
-              hintText: 'Buscar recetas o ingredientes',
+              hintText: 'Buscar recetas por nombre',
               hintStyle: const TextStyle(color: Colors.black),
             ),
             onFieldSubmitted: (String _) {
@@ -122,43 +119,52 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ),
         body: isShowUsers
-            ? FutureBuilder(
-                future: FirebaseFirestore.instance
-                    .collection('users')
-                    .where('username',
-                        isGreaterThanOrEqualTo: searchController.text)
-                    .get(), //Cambiar la colleccion a catalogo, el where debe ser cambiado de username a nombre receta y el otro where email por ingrediente
+            ? StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('buscador')
+                    .snapshots(),
                 builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                  return ListView.builder(
-                    itemCount: (snapshot.data! as dynamic).docs.length,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProfileScreen(
-                              uid: (snapshot.data! as dynamic).docs[index]
-                                  ['uid'],
-                            ),
-                          ),
-                        ),
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundImage: NetworkImage(
-                                (snapshot.data! as dynamic).docs[index]
-                                    ['photoUrl']),
-                          ),
-                          title: Text(
-                            (snapshot.data! as dynamic).docs[index]['username'],
-                          ),
-                        ),
-                      );
-                    },
-                  );
+                  return (snapshot.connectionState == ConnectionState.waiting)
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            var data = snapshot.data!.docs[index].data()
+                                as Map<String, dynamic>;
+                            if (data['titulo']
+                                .toString()
+                                .toLowerCase()
+                                .startsWith(
+                                    searchController.text.toLowerCase())) {
+                              return InkWell(
+                                onTap: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => BuscadorRecetaScreen(
+                                      documento: (snapshot.data! as dynamic)
+                                          .docs[index]['seccion'],
+                                      titulo: (snapshot.data! as dynamic)
+                                          .docs[index]['uid'],
+                                    ),
+                                  ),
+                                ), //navegar a la receta
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(data['photoUrl']),
+                                  ),
+                                  title: Text(
+                                    data['titulo'],
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              );
+                            }
+                            return Container();
+                          },
+                        );
                 },
               ) //TERMINO DEL BUSCADOR
             : isloading
@@ -175,7 +181,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
                               Text(
-                                'Catalogo de recetas',
+                                'Catálogo de recetas',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 25),
                               ),

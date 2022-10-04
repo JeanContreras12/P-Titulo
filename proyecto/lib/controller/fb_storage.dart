@@ -10,6 +10,7 @@ class MetodosStorage {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //funcion para añadir imagenes a firebase Storage
+  // ignore: non_constant_identifier_names
   Future<String> SubirImagenAStorage(
       String childName, Uint8List file, bool isPost) async {
     Reference ref = _storage.ref().child(childName).child(_auth.currentUser!
@@ -40,6 +41,8 @@ class FirestoreMethods {
     String uid,
     String username,
     String profImage,
+    List ingred,
+    Map steps,
   ) async {
     String rest = "Ocurrio un error";
     try {
@@ -58,6 +61,8 @@ class FirestoreMethods {
         postUrl: photoUrl,
         profImage: profImage,
         saves: [],
+        ingred: ingred,
+        steps: steps,
       ); //con esto subimos a la storage, falta subirlo a firebase
 
       _firestore.collection('posts').doc(postId).set(post.toJson());

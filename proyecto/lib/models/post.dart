@@ -11,6 +11,9 @@ class Post {
   final String profImage;
   // ignore: prefer_typing_uninitialized_variables
   final saves;
+  // ignore: prefer_typing_uninitialized_variables
+  final List ingred;
+  final Map steps;
 
   const Post({
     required this.description,
@@ -21,6 +24,8 @@ class Post {
     required this.postUrl,
     required this.profImage,
     required this.saves,
+    required this.ingred,
+    required this.steps,
   });
 
   //cambiar cualquier info que necesitamos a objeto
@@ -33,6 +38,8 @@ class Post {
         'profImage': profImage,
         'saves': saves,
         'photoUrl': postUrl,
+        'ingred': ingred,
+        'steps': steps,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -46,6 +53,8 @@ class Post {
       profImage: snapshot['profImage'],
       saves: snapshot['saves'],
       postUrl: snapshot['postUrl'],
+      ingred: snapshot['ingred'],
+      steps: snapshot['steps'],
     );
   }
 }

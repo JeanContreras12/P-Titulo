@@ -95,28 +95,40 @@ class _DetalleRecetaScreenState extends State<DetalleRecetaScreen> {
                                     "Ingredientes:",
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 15,
+                                      fontSize: 21,
                                     ),
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   for (var item in widget.snap['ingredientes'])
-                                    Text("- $item \n"),
+                                    Text(
+                                      "- $item \n",
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   const Text("Pasos:",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 15,
+                                        fontSize: 21,
                                       )),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   for (var item in widget.snap['pasos'].keys)
-                                    Text(
-                                        "$item.-  ${widget.snap['pasos'][item]} \n"),
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 40),
+                                      child: Text(
+                                        "$item.-  ${widget.snap['pasos'][item]} \n",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               );
                             }),

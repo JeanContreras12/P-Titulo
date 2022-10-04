@@ -164,11 +164,17 @@ class PostFireBase extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Center(
-                  child: Text('Presiona para ver más',
-                      style: TextStyle(
-                          fontSize: 14,
-                          color: Color.fromARGB(255, 107, 107, 107))),
+                TextButton(
+                  onPressed: () {},
+                  child: const Center(
+                    child: Text('Presiona para ver más detalles',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: Color.fromARGB(255, 107, 107, 107))),
+                  ),
+                ),
+                const SizedBox(
+                  height: 6,
                 ),
                 Container(
                   width: double.infinity,
@@ -179,7 +185,8 @@ class PostFireBase extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: snap['description'],
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
                       ],
                     ),
