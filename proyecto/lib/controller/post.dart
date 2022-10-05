@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:riesgo/controller/catalog.dart';
 import 'package:riesgo/models/user_provider.dart';
 import 'package:riesgo/screens/comentarios_screen.dart';
+import 'package:riesgo/screens/detalle_receta.dart';
 import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/controller/fb_storage.dart';
 import 'package:riesgo/controller/guardado_animacion.dart';
@@ -165,7 +167,10 @@ class PostFireBase extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => DetalleRecetaScreen(snap: snap)));
+                  },
                   child: const Center(
                     child: Text('Presiona para ver más detalles',
                         style: TextStyle(
@@ -184,7 +189,7 @@ class PostFireBase extends StatelessWidget {
                       style: const TextStyle(color: Colors.black),
                       children: [
                         TextSpan(
-                          text: snap['description'],
+                          text: snap['titulo'],
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),

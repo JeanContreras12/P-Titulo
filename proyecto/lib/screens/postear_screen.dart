@@ -68,6 +68,7 @@ class _PostearScreenState extends State<PostearScreen> {
         profImage,
         ingredients,
         stepsMap,
+        _timeTextController.text,
       );
 
       if (res == "exito") {

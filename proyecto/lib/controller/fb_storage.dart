@@ -36,13 +36,14 @@ class FirestoreMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   //subir el post a firebase
   Future<String> uploadPost(
-    String description,
+    String titulo,
     Uint8List file,
     String uid,
     String username,
     String profImage,
-    List ingred,
-    Map steps,
+    List ingredientes,
+    Map pasos,
+    String tiempo,
   ) async {
     String rest = "Ocurrio un error";
     try {
@@ -53,7 +54,7 @@ class FirestoreMethods {
           .v1(); //extension uuid, v1 crea un identificador unico basado en tiempo actual, v4
 
       Post post = Post(
-        description: description,
+        titulo: titulo,
         uid: uid,
         username: username,
         postId: postId,
@@ -61,8 +62,9 @@ class FirestoreMethods {
         postUrl: photoUrl,
         profImage: profImage,
         saves: [],
-        ingred: ingred,
-        steps: steps,
+        ingredientes: ingredientes,
+        pasos: pasos,
+        tiempo: tiempo,
       ); //con esto subimos a la storage, falta subirlo a firebase
 
       _firestore.collection('posts').doc(postId).set(post.toJson());
