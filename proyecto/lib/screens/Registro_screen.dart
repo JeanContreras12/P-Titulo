@@ -68,42 +68,6 @@ class _RegistroScreenState extends State<RegistroScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      // TextFormField(
-                      //   controller: _nombreUsuarioTextController,
-                      //   obscureText: false,
-                      //   enableSuggestions: true,
-                      //   autocorrect: true,
-                      //   cursorColor: Colors.black,
-                      //   style: TextStyle(color: Colors.black.withOpacity(0.9)),
-                      //   decoration: InputDecoration(
-                      //       icon: const Icon(Icons.person_outline,
-                      //           color: Colors.black),
-                      //       hintText: "Nombre",
-                      //       labelText: "Nombre",
-                      //       labelStyle:
-                      //           TextStyle(color: Colors.black.withOpacity(0.9)),
-                      //       filled: true,
-                      //       fillColor: Colors.black.withOpacity(0.3),
-                      //       floatingLabelBehavior: FloatingLabelBehavior.never,
-                      //       border: OutlineInputBorder(
-                      //           borderRadius: BorderRadius.circular(30.0),
-                      //           borderSide: const BorderSide(
-                      //               width: 0, style: BorderStyle.none))),
-                      //   keyboardType: TextInputType.emailAddress,
-                      //   validator: (value) {
-                      //     if (value != null && value.length < 4) {
-                      //       return 'Demasiado corto';
-                      //     } else if (value != null && value.length > 15) {
-                      //       return 'Demasiado largo';
-                      //     } else {
-                      //       return null;
-                      //     }
-                      //   },
-                      // ),
-                      // const SizedBox(
-                      //   height: 20,
-                      // ),
-
                       reutilizableTextFormField(
                           "Nombre de usuario",
                           Icons.person_outline,

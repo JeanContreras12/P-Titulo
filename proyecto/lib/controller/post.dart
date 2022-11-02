@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/controller/catalog.dart';
+import 'package:riesgo/models/lib.dart';
 import 'package:riesgo/models/user_provider.dart';
 import 'package:riesgo/screens/comentarios_screen.dart';
 import 'package:riesgo/screens/detalle_receta.dart';
+import 'package:riesgo/screens/mensajes_screen.dart';
 import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/controller/fb_storage.dart';
 import 'package:riesgo/controller/guardado_animacion.dart';
 import 'package:riesgo/models/user.dart' as model;
 
-class PostFireBase extends StatelessWidget {
+class PostFireBase extends StatefulWidget {
   final snap;
   const PostFireBase({Key? key, required this.snap}) : super(key: key);
+
+  @override
+  State<PostFireBase> createState() => _PostFireBaseState();
+}
+
+class _PostFireBaseState extends State<PostFireBase> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +52,7 @@ class PostFireBase extends StatelessWidget {
                   return CircleAvatar(
                     radius: 16,
                     backgroundImage: NetworkImage(
-                      snap['profImage'],
+                      widget.snap['profImage'],
                     ),
                   );
                 }),
@@ -67,7 +78,7 @@ class PostFireBase extends StatelessWidget {
                           onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => ProfileScreen(
-                                uid: snap['uid'],
+                                uid: widget.snap['uid'],
                               ),
                             ),
                           ),
@@ -76,7 +87,7 @@ class PostFireBase extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                snap['username'],
+                                widget.snap['username'],
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold),
                               ),
@@ -90,7 +101,7 @@ class PostFireBase extends StatelessWidget {
                 IconButton(
                   //icono derecho 3 puntos con opciones
                   onPressed: () {
-                    if (user!.uid == snap['uid']) {
+                    if (user!.uid == widget.snap['uid']) {
                       showDialog(
                         context: context,
                         builder: (context) => Dialog(
@@ -106,7 +117,7 @@ class PostFireBase extends StatelessWidget {
                                   (e) => InkWell(
                                     onTap: () async {
                                       FirestoreMethods()
-                                          .deletePost(snap['postId']);
+                                          .deletePost(widget.snap['postId']);
                                       Navigator.of(context).pop();
                                     },
                                     child: Container(
@@ -130,11 +141,22 @@ class PostFireBase extends StatelessWidget {
                             ),
                             shrinkWrap: true,
                             children: [
-                              'Ver detalles',
+                              'Enviar mensaje',
                             ]
                                 .map(
                                   (e) => InkWell(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => MensajesScreen(
+                                            friendName: widget.snap['username'],
+                                            friendUid: widget.snap['uid'],
+                                            historial: 0,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 12, horizontal: 16),
@@ -157,7 +179,7 @@ class PostFireBase extends StatelessWidget {
           SizedBox(
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
-            child: Image.network(snap['photoUrl']),
+            child: Image.network(widget.snap['photoUrl']),
           ),
           //descripcion
           Container(
@@ -169,7 +191,8 @@ class PostFireBase extends StatelessWidget {
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => DetalleRecetaScreen(snap: snap)));
+                        builder: (context) =>
+                            DetalleRecetaScreen(snap: widget.snap)));
                   },
                   child: const Center(
                     child: Text('Presiona para ver más detalles',
@@ -189,7 +212,7 @@ class PostFireBase extends StatelessWidget {
                       style: const TextStyle(color: Colors.black),
                       children: [
                         TextSpan(
-                          text: snap['titulo'],
+                          text: widget.snap['titulo'],
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 16),
                         ),
@@ -205,14 +228,15 @@ class PostFireBase extends StatelessWidget {
                         .textTheme
                         .subtitle2!
                         .copyWith(fontWeight: FontWeight.bold),
-                    child: snap['saves'].length == 0 || snap['saves'].length > 1
+                    child: widget.snap['saves'].length == 0 ||
+                            widget.snap['saves'].length > 1
                         ? Text(
-                            '${snap['saves'].length} guardados',
+                            '${widget.snap['saves'].length} guardados',
                             style: const TextStyle(
                                 color: Color.fromARGB(255, 105, 105, 105)),
                           )
                         : Text(
-                            '${snap['saves'].length} guardado',
+                            '${widget.snap['saves'].length} guardado',
                             style: const TextStyle(
                                 color: Color.fromARGB(255, 105, 105, 105)),
                           )),
@@ -224,14 +248,14 @@ class PostFireBase extends StatelessWidget {
           Row(
             children: [
               SaveAnimation(
-                isAnimating: snap['saves'].contains(user?.uid),
+                isAnimating: widget.snap['saves'].contains(user?.uid),
                 smallSave: true,
                 child: IconButton(
                   onPressed: () async {
-                    await FirestoreMethods()
-                        .savePost(snap['postId'], user!.uid, snap['saves']);
+                    await FirestoreMethods().savePost(
+                        widget.snap['postId'], user!.uid, widget.snap['saves']);
                   },
-                  icon: snap['saves'].contains(user?.uid)
+                  icon: widget.snap['saves'].contains(user?.uid)
                       ? const Icon(
                           Icons.save_sharp,
                           color: Colors.red,
@@ -245,18 +269,11 @@ class PostFireBase extends StatelessWidget {
               IconButton(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => CommentsScreen(snap: snap),
+                    builder: (context) => CommentsScreen(snap: widget.snap),
                   ),
                 ),
                 icon: const Icon(
                   Icons.comment_outlined,
-                  color: Colors.black,
-                ),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.send_sharp,
                   color: Colors.black,
                 ),
               ),
@@ -266,7 +283,7 @@ class PostFireBase extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 4),
             child: Text(
               DateFormat.yMMMd().format(
-                snap['datePublished'].toDate(),
+                widget.snap['datePublished'].toDate(),
               ),
               style: const TextStyle(
                   fontSize: 12, color: Color.fromARGB(255, 76, 76, 76)),

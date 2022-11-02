@@ -25,6 +25,7 @@ class _InicioScreenState extends State<InicioScreen> {
   void initState() {
     super.initState();
     addData();
+
     pageController = PageController();
   }
 

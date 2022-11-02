@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/controller/post.dart';
 import 'package:riesgo/controller/reutilizable.dart';
+import 'package:riesgo/screens/historial_mensajes_screen.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
@@ -15,7 +17,15 @@ class FeedScreen extends StatelessWidget {
         title: logoWidget("assets/logo-.png", 90, 70),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => HistorialMensajesScreen(
+                    uid: FirebaseAuth.instance.currentUser!.uid,
+                  ),
+                ),
+              );
+            },
             icon: const Icon(
               Icons.messenger_outline_sharp,
               color: Colors.black,

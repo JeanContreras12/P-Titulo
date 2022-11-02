@@ -7,6 +7,7 @@ import 'package:riesgo/screens/edit_perfil.dart';
 import 'package:riesgo/controller/fb_storage.dart';
 import 'package:riesgo/controller/follow_button.dart';
 import 'package:riesgo/controller/reutilizable.dart';
+import 'package:riesgo/screens/mensajes_screen.dart';
 import 'package:tab_indicator_styler/tab_indicator_styler.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -155,7 +156,18 @@ class _ProfileScreenState extends State<ProfileScreen>
                             ]
                                 .map(
                                   (e) => InkWell(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      Navigator.pop(context);
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => MensajesScreen(
+                                            friendName: userData['username'],
+                                            friendUid: userData['uid'],
+                                            historial: 0,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 12, horizontal: 16),
