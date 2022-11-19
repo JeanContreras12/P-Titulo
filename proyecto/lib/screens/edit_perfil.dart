@@ -3,9 +3,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:riesgo/screens/inicio_screen.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/fb_storage.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class EditProfil extends StatefulWidget {
   final String uid;
@@ -68,6 +67,7 @@ class _EditProfilState extends State<EditProfil> {
       }
       await FirestoreMethods()
           .ChangeProfilePic(uid, photoUrl, nombre, description);
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       setState(() {
         isLoading = false;
@@ -99,21 +99,56 @@ class _EditProfilState extends State<EditProfil> {
           )
         : Scaffold(
             appBar: AppBar(
-              iconTheme: IconThemeData(color: Colors.black),
+              iconTheme: const IconThemeData(color: Colors.black),
               backgroundColor: Colors.white,
               title: const Text('Editar perfil '),
               titleTextStyle:
                   const TextStyle(color: Colors.black, fontSize: 20),
               actions: [
                 TextButton(
-                  onPressed: (() {
+                  onPressed: (() async {
+                    bool nameUsed = false;
+                    var postSnap = await FirebaseFirestore.instance
+                        .collection('users')
+                        .where('username', isEqualTo: nombre)
+                        .get();
+                    postSnap.docs.forEach(
+                      (msgDoc) async {
+                        print(msgDoc['username']);
+                        if (msgDoc['username'] == nombre) {
+                          nameUsed = true;
+                        }
+                      },
+                    );
                     final isValidForm = _formKey.currentState!.validate();
 
                     if (isValidForm) {
-                      postImage(FirebaseAuth.instance.currentUser!.uid);
+                      if (nameUsed != true) {
+                        postImage(FirebaseAuth.instance.currentUser!.uid);
+                      } else {
+                        return showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text(
+                                  'Error',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                                content: SingleChildScrollView(
+                                  child: ListBody(
+                                    children: const [
+                                      Text('Nombre de usuario ya registrado',
+                                          textAlign: TextAlign.center)
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      }
                     }
                   }),
-                  child: Icon(
+                  child: const Icon(
                     Icons.check_circle_rounded,
                     size: 30.0,
                   ),
@@ -174,7 +209,7 @@ class _EditProfilState extends State<EditProfil> {
                         key: _formKey,
                         child: Column(
                           children: [
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             TextFormField(
@@ -200,7 +235,7 @@ class _EditProfilState extends State<EditProfil> {
                                     return null;
                                   }
                                 }),
-                            SizedBox(
+                            const SizedBox(
                               height: 30,
                             ),
                             TextFormField(
@@ -216,8 +251,8 @@ class _EditProfilState extends State<EditProfil> {
                                 ),
                                 keyboardType: TextInputType.emailAddress,
                                 validator: (value) {
-                                  if (value != null && value.length < 1) {
-                                    return 'Demasiado corto';
+                                  if (value != null && value.isEmpty) {
+                                    return 'No debe estar vacío';
                                   } else if (value != null &&
                                       value.length > 100) {
                                     return 'Demasiado largo';

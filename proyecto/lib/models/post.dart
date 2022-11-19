@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Post {
-  final String description;
+  final String titulo;
   final String username;
   final String uid;
   final String postId;
@@ -11,9 +11,13 @@ class Post {
   final String profImage;
   // ignore: prefer_typing_uninitialized_variables
   final saves;
+  // ignore: prefer_typing_uninitialized_variables
+  final List ingredientes;
+  final Map pasos;
+  final String tiempo;
 
   const Post({
-    required this.description,
+    required this.titulo,
     required this.uid,
     required this.username,
     required this.postId,
@@ -21,11 +25,14 @@ class Post {
     required this.postUrl,
     required this.profImage,
     required this.saves,
+    required this.ingredientes,
+    required this.pasos,
+    required this.tiempo,
   });
 
   //cambiar cualquier info que necesitamos a objeto
   Map<String, dynamic> toJson() => {
-        'description': description,
+        'titulo': titulo,
         'uid': uid,
         'username': username,
         'postId': postId,
@@ -33,6 +40,9 @@ class Post {
         'profImage': profImage,
         'saves': saves,
         'photoUrl': postUrl,
+        'ingredientes': ingredientes,
+        'pasos': pasos,
+        'tiempo': tiempo,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -40,12 +50,15 @@ class Post {
     return Post(
       username: snapshot['username'],
       uid: snapshot['uid'],
-      description: snapshot['description'],
+      titulo: snapshot['titulo'],
       postId: snapshot['postId'],
       datePublished: snapshot['datePublished'],
       profImage: snapshot['profImage'],
       saves: snapshot['saves'],
       postUrl: snapshot['postUrl'],
+      ingredientes: snapshot['ingredientes'],
+      pasos: snapshot['pasos'],
+      tiempo: snapshot['tiempo'],
     );
   }
 }

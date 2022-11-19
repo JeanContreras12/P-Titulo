@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/cambiar_contra.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class ChangePassScreen extends StatefulWidget {
   final String uid;
@@ -100,7 +100,7 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                         ),
                         keyboardType: TextInputType.visiblePassword,
                         validator: (value) {
-                          if (value != null && value.length < 1) {
+                          if (value != null && value.isEmpty) {
                             return 'Demasiado corto';
                           } else if (value != null && value.length > 70) {
                             return 'Demasiado largo';
@@ -124,14 +124,16 @@ class _ChangePassScreenState extends State<ChangePassScreen> {
                                 _formKey.currentState!.validate();
                             var currentPassword = await checkCurrentPass(
                                 _contraUsuarioTextController.text);
+                            String pass = _contraUsuarioTextController.text;
                             if (isValidForm && currentPassword) {
                               // ignore: use_build_context_synchronously
                               Navigator.pop(context);
                               // ignore: use_build_context_synchronously
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      const AuthChangePassScreen(),
+                                  builder: (context) => AuthChangePassScreen(
+                                    passw: pass,
+                                  ),
                                 ),
                               );
                             } else {

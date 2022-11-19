@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:riesgo/models/user.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class Userprovider with ChangeNotifier {
   User? _user;
@@ -13,3 +13,4 @@ class Userprovider with ChangeNotifier {
     notifyListeners();
   }
 }
+// llamada al servicio de firebase para autenticar obtener nuevo usuario y sus detalles.
