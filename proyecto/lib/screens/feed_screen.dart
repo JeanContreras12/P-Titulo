@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttericon/mfg_labs_icons.dart';
 import 'package:riesgo/controller/post.dart';
 import 'package:riesgo/controller/reutilizable.dart';
 import 'package:riesgo/screens/historial_mensajes_screen.dart';
@@ -27,8 +28,8 @@ class FeedScreen extends StatelessWidget {
               );
             },
             icon: const Icon(
-              Icons.messenger_outline_sharp,
-              color: Colors.black,
+              MfgLabs.comment,
+              color: Colors.green,
             ),
           ),
         ],

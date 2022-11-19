@@ -59,7 +59,8 @@ class _MensajesScreenState extends State<MensajesScreen> {
                 'names': {
                   currentUserId: userData2['username'],
                   friendUid: friendName
-                }
+                },
+                'nuevomsg': false
               }).then((value) => {chatDocId = value.id, primerMSH = 1});
             }
           },
@@ -139,12 +140,7 @@ class _MensajesScreenState extends State<MensajesScreen> {
               middle: Text(friendName),
               trailing: CupertinoButton(
                 padding: EdgeInsets.zero,
-                onPressed: () {
-                  // widget.historial == 1
-                  //     ? Navigator.pop(context)
-                  //     : Navigator.pop(context);
-                  // Navigator.pop(context); //falta arreglar
-                },
+                onPressed: () {},
                 child: const Text(""),
               ),
               previousPageTitle: "Volver", //averiguar si se le puede meter pop

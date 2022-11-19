@@ -78,8 +78,11 @@ class _HistorialMensajesScreen extends State<HistorialMensajesScreen> {
                         print(chatState.messages.values);
                         return Observer(
                           builder: (_) => CupertinoListTile(
-                            onTap: () => callChatDetailScreen(
-                                context, data['friendName'], data['friendUid']),
+                            onTap: () {
+                              Navigator.pop(context);
+                              callChatDetailScreen(context, data['friendName'],
+                                  data['friendUid']);
+                            },
                             title: Text(data['friendName']),
                             subtitle: Text(data['msg']),
                           ),
