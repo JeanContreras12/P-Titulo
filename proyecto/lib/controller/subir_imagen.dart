@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -17,18 +15,18 @@ class _PhotoUploadState extends State<PhotoUpload> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Subida de imagen"),
+        title: const Text("Subida de imagen"),
         centerTitle: true,
       ),
       body: Center(
         child: sampleImage == null
-            ? Text("Selecciona una imagen")
+            ? const Text("Selecciona una imagen")
             : enableUpload(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getImage,
         tooltip: "Añade una imagen",
-        child: Icon(Icons.add_a_photo),
+        child: const Icon(Icons.add_a_photo),
       ),
     );
   }

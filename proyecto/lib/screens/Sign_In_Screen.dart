@@ -1,14 +1,12 @@
 // ignore_for_file: file_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Registro_screen.dart';
 import 'package:riesgo/screens/inicio_screen.dart';
 import 'package:riesgo/screens/reset_password.dart';
-import 'package:riesgo/models/user.dart' as model;
 import 'package:riesgo/utilidades/colores.dart';
-import 'package:riesgo/widgets/reutilizable.dart';
+import 'package:riesgo/controller/reutilizable.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);

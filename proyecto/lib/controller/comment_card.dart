@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CommentCardScreen extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final snap;
   const CommentCardScreen({
     Key? key,

@@ -1,16 +1,10 @@
-import 'dart:convert';
-import 'dart:ffi';
-import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riesgo/models/user.dart' as model;
 import 'package:riesgo/screens/Registro_screen.dart';
-import 'package:riesgo/widgets/fb_storage.dart';
 
 Image logoWidget(String imageName, double wid, double hei) {
   return Image.asset(
@@ -105,7 +99,7 @@ TextFormField reutilizableTextFormField(
         : TextInputType.emailAddress,
     validator: (value) {
       if (value != null && value.length < minimo) {
-        return '$dialogo';
+        return dialogo;
       } else if (value != null && value.length > maximo) {
         return 'Demasiado largo';
       } else {
@@ -221,10 +215,26 @@ class MetodosdeAuth {
             .collection('users')
             .doc(cred.user!.uid)
             .set(user.toJson());
+
         res = "Exitoso";
       }
     } catch (error) {
-      res = 'error';
+      if (error.toString() ==
+          '[firebase_auth/email-already-in-use] The email address is already in use by another account.') {
+        res = "fallo email";
+
+        ///FALTA VERIFICAR NOMBRE DE USUARIO YA USADO
+
+        var postSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .where(username, isEqualTo: username)
+            .get();
+        postSnap.docs.forEach((msgDoc) async {
+          print(msgDoc);
+        });
+      } else {
+        res = 'ERROR';
+      }
     }
     return res;
   }

@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:riesgo/providers/user_provider.dart';
+import 'package:riesgo/models/lib.dart';
+import 'package:riesgo/models/user_provider.dart';
 import 'package:riesgo/screens/buscar_screen.dart';
 import 'package:riesgo/screens/feed_screen.dart';
 import 'package:riesgo/screens/postear_screen.dart';
@@ -17,6 +19,8 @@ class InicioScreen extends StatefulWidget {
 }
 
 class _InicioScreenState extends State<InicioScreen> {
+  String? mtoken = " ";
+  bool primera = true;
   int _page = 0;
   late PageController pageController;
   var user = FirebaseAuth.instance.currentUser!.uid;
@@ -24,7 +28,14 @@ class _InicioScreenState extends State<InicioScreen> {
   @override
   void initState() {
     super.initState();
+
+    getToken();
     addData();
+    if (primera == true) {
+      chatState.refreshChatsForCurrentUser();
+      primera = false;
+    }
+
     pageController = PageController();
   }
 
@@ -55,24 +66,23 @@ class _InicioScreenState extends State<InicioScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-        children: homeScreenItems = [
-          FeedScreen(),
-          SearchScreen(),
-          PostearScreen(
-            uid: FirebaseAuth.instance.currentUser!.uid,
-          ),
-          Text('hola4'),
-          ProfileScreen(
-            uid: FirebaseAuth.instance.currentUser!.uid,
-          ),
-        ],
         physics:
             const NeverScrollableScrollPhysics(), //evita que se pueda cambiar de ventana arrastrando la pantalla hacia los lados
         controller: pageController,
         onPageChanged: onPageChanged,
+        children: homeScreenItems = [
+          const FeedScreen(),
+          const SearchScreen(),
+          PostearScreen(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          ),
+          ProfileScreen(
+            uid: FirebaseAuth.instance.currentUser!.uid,
+          ),
+        ],
       ),
       bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: Color.fromARGB(255, 231, 231, 231),
+        backgroundColor: const Color.fromARGB(255, 231, 231, 231),
         items: [
           BottomNavigationBarItem(
             icon: Icon(
@@ -100,16 +110,8 @@ class _InicioScreenState extends State<InicioScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.beenhere,
-              color: _page == 3 ? Colors.black : Colors.grey,
-            ),
-            label: '',
-            backgroundColor: Colors.white,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
               Icons.person,
-              color: _page == 4 ? Colors.black : Colors.grey,
+              color: _page == 3 ? Colors.black : Colors.grey,
             ),
             label: '',
             backgroundColor: Colors.white,
@@ -118,5 +120,14 @@ class _InicioScreenState extends State<InicioScreen> {
         onTap: navigationTapped,
       ),
     );
+  }
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mtoken = token;
+        print("El token es : $mtoken");
+      });
+    });
   }
 }

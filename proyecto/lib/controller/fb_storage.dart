@@ -1,10 +1,7 @@
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:riesgo/models/post.dart';
 import 'package:uuid/uuid.dart';
 
@@ -13,6 +10,7 @@ class MetodosStorage {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //funcion para añadir imagenes a firebase Storage
+  // ignore: non_constant_identifier_names
   Future<String> SubirImagenAStorage(
       String childName, Uint8List file, bool isPost) async {
     Reference ref = _storage.ref().child(childName).child(_auth.currentUser!
@@ -38,11 +36,14 @@ class FirestoreMethods {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   //subir el post a firebase
   Future<String> uploadPost(
-    String description,
+    String titulo,
     Uint8List file,
     String uid,
     String username,
     String profImage,
+    List ingredientes,
+    Map pasos,
+    String tiempo,
   ) async {
     String rest = "Ocurrio un error";
     try {
@@ -53,7 +54,7 @@ class FirestoreMethods {
           .v1(); //extension uuid, v1 crea un identificador unico basado en tiempo actual, v4
 
       Post post = Post(
-        description: description,
+        titulo: titulo,
         uid: uid,
         username: username,
         postId: postId,
@@ -61,6 +62,9 @@ class FirestoreMethods {
         postUrl: photoUrl,
         profImage: profImage,
         saves: [],
+        ingredientes: ingredientes,
+        pasos: pasos,
+        tiempo: tiempo,
       ); //con esto subimos a la storage, falta subirlo a firebase
 
       _firestore.collection('posts').doc(postId).set(post.toJson());
