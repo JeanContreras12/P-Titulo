@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +23,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging messaging = FirebaseMessaging.instance;
 
+  // ignore: unused_local_variable
   NotificationSettings settings = await messaging.requestPermission(
     alert: true,
     announcement: false,
@@ -30,13 +33,6 @@ void main() async {
     provisional: false,
     sound: true,
   );
-  // if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-  //   print("usuario permitido");
-  // } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
-  //   print("usuario con permiso provicional permitido");
-  // } else {
-  //   print("usuario declinado");
-  // }
 
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     print('Got a message whilst in the foreground!');

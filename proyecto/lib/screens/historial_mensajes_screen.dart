@@ -69,12 +69,13 @@ class _HistorialMensajesScreen extends State<HistorialMensajesScreen> {
                   color: Colors.white,
                   child: CustomScrollView(
                     slivers: [
-                      CupertinoSliverNavigationBar(
+                      const CupertinoSliverNavigationBar(
                         largeTitle: Text("Mensajes"),
                       ),
                       SliverList(
                           delegate: SliverChildListDelegate(
                               chatState.messages.values.toList().map((data) {
+                        // ignore: avoid_print
                         print(chatState.messages.values);
                         return Observer(
                           builder: (_) => CupertinoListTile(

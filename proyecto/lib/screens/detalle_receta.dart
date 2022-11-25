@@ -1,7 +1,10 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:riesgo/controller/reutilizable.dart';
 
 class DetalleRecetaScreen extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final snap;
   const DetalleRecetaScreen({Key? key, required this.snap}) : super(key: key);
 
@@ -104,7 +107,7 @@ class _DetalleRecetaScreenState extends State<DetalleRecetaScreen> {
                                   for (var item in widget.snap['ingredientes'])
                                     Text(
                                       "- $item \n",
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 15,
                                       ),
                                     ),
@@ -124,7 +127,7 @@ class _DetalleRecetaScreenState extends State<DetalleRecetaScreen> {
                                       padding: const EdgeInsets.only(right: 40),
                                       child: Text(
                                         "$item.-  ${widget.snap['pasos'][item]} \n",
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: 15,
                                         ),
                                       ),
@@ -149,6 +152,7 @@ class _DetalleRecetaScreenState extends State<DetalleRecetaScreen> {
   }
 
   ingredientes() {
+    // ignore: unused_local_variable
     List<Widget> list = [];
     try {
       print(widget.snap);
@@ -158,6 +162,6 @@ class _DetalleRecetaScreenState extends State<DetalleRecetaScreen> {
     } catch (e) {
       print(e);
     }
-    return Text("algo");
+    return const Text("algo");
   }
 }

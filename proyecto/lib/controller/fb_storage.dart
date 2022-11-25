@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, non_constant_identifier_names, avoid_function_literals_in_foreach_calls
+
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,7 +12,6 @@ class MetodosStorage {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   //funcion para añadir imagenes a firebase Storage
-  // ignore: non_constant_identifier_names
   Future<String> SubirImagenAStorage(
       String childName, Uint8List file, bool isPost) async {
     Reference ref = _storage.ref().child(childName).child(_auth.currentUser!

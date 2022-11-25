@@ -1,5 +1,8 @@
+// ignore_for_file: file_names, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:riesgo/screens/Sign_In_Screen.dart';
 import 'package:riesgo/utilidades/colores.dart';
 import 'package:riesgo/controller/reutilizable.dart';
@@ -122,6 +125,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                               .where('username',
                                   isEqualTo: _nombreUsuarioTextController.text)
                               .get();
+                          // ignore: avoid_function_literals_in_foreach_calls
                           postSnap.docs.forEach(
                             (msgDoc) async {
                               print(msgDoc['username']);
@@ -158,6 +162,7 @@ class _RegistroScreenState extends State<RegistroScreen> {
                                       );
                                     });
                               } else if (emailUser == 'Exitoso') {
+                                // ignore: use_build_context_synchronously
                                 Navigator.pop(context);
                                 showDialog(
                                     context: context,

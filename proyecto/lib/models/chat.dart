@@ -38,6 +38,7 @@ abstract class _ChatState with Store {
           'friendid': friendUid.values.first
         };
       }).toList();
+      // ignore: avoid_function_literals_in_foreach_calls
       chatDocuments.forEach((doc) {
         FirebaseFirestore.instance
             .collection('chats/${doc['docid']}/messages')

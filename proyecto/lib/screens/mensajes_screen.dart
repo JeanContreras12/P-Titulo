@@ -1,9 +1,9 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_chat_bubble/bubble_type.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
 import 'package:flutter_chat_bubble/clippers/chat_bubble_clipper_6.dart';
@@ -12,12 +12,14 @@ class MensajesScreen extends StatefulWidget {
   final friendUid;
   final friendName;
   final historial;
+  // ignore: prefer_const_constructors_in_immutables
   MensajesScreen(
       {Key? key, this.friendUid, this.friendName, required this.historial})
       : super(key: key);
 
   @override
   State<MensajesScreen> createState() =>
+      // ignore: no_logic_in_create_state
       _MensajesScreenState(friendUid, friendName);
 }
 
@@ -27,6 +29,7 @@ class _MensajesScreenState extends State<MensajesScreen> {
   final friendName;
   final currentUserId = FirebaseAuth.instance.currentUser?.uid;
   var chatDocId;
+  // ignore: prefer_final_fields, unnecessary_new
   var _textController = new TextEditingController();
   int primerMSH = 0;
   _MensajesScreenState(this.friendUid, this.friendName);
@@ -97,7 +100,7 @@ class _MensajesScreenState extends State<MensajesScreen> {
     return Alignment.topLeft;
   }
 
-  var _numberToMonthMap = {
+  final _numberToMonthMap = {
     1: "Enero",
     2: "Feb.",
     3: "Mar.",
