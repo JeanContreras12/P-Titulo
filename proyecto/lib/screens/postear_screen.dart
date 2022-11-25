@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,8 +10,8 @@ import 'package:riesgo/models/user_provider.dart';
 import 'package:riesgo/controller/fb_storage.dart';
 import 'package:riesgo/controller/reutilizable.dart';
 import 'package:riesgo/models/user.dart' as model;
-import 'package:snippet_coder_utils/FormHelper.dart';
 
+// ignore: must_be_immutable
 class PostearScreen extends StatefulWidget {
   String uid;
   PostearScreen({Key? key, required this.uid}) : super(key: key);
@@ -237,7 +239,7 @@ class _PostearScreenState extends State<PostearScreen> {
                         postImage(
                           user!.uid,
                           userData['username'],
-                          user.photoUrl,
+                          userData['photoUrl'],
                         );
                       }
                     }),
@@ -478,6 +480,7 @@ class _PostearScreenState extends State<PostearScreen> {
                     } else {
                       if (ingredients.length == index + 1) {
                         ingredients[index] = value;
+                        // ignore: avoid_print
                         print(ingredients);
                       }
                       return null;

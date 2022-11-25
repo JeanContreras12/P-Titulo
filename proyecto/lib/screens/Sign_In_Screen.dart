@@ -127,6 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Future IniciarSesion() async {
     try {
       await FirebaseAuth.instance
@@ -135,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
               password: _passwordTextController.text)
           .then((value) => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const InicioScreen())));
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       showDialog(
           context: context,
           builder: (BuildContext context) {

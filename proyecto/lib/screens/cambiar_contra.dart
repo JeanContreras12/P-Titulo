@@ -1,3 +1,5 @@
+// ignore_for_file: await_only_futures
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:riesgo/screens/Sign_In_Screen.dart';
@@ -131,7 +133,7 @@ class _AuthChangePassScreenState extends State<AuthChangePassScreen> {
                           onPressed: () async {
                             final isValidForm =
                                 _formKey.currentState!.validate();
-                            var user = await FirebaseAuth.instance.currentUser!;
+
                             if (isValidForm) {
                               if (widget.passw !=
                                   _passwordTextController.text) {

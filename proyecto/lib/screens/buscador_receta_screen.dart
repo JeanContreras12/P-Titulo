@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:riesgo/controller/catalog.dart';
 import 'package:riesgo/controller/reutilizable.dart';
-import 'package:riesgo/screens/detalle_receta.dart';
 
 class BuscadorRecetaScreen extends StatefulWidget {
   final String documento;
@@ -146,7 +142,7 @@ class _BuscadorRecetaScreenState extends State<BuscadorRecetaScreen> {
                                       for (var item in userData['ingredientes'])
                                         Text(
                                           "- $item \n",
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             fontSize: 15,
                                           ),
                                         ),
@@ -167,7 +163,7 @@ class _BuscadorRecetaScreenState extends State<BuscadorRecetaScreen> {
                                               const EdgeInsets.only(right: 40),
                                           child: Text(
                                             "$item.-  ${userData['pasos'][item]} \n",
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 15,
                                             ),
                                           ),

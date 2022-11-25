@@ -109,6 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                                         await FirestoreMethods().signOut();
                                         FirebaseAuth.instance
                                             .authStateChanges();
+                                        // ignore: use_build_context_synchronously
                                         Navigator.of(context)
                                             .pushAndRemoveUntil(
                                                 MaterialPageRoute(
@@ -325,6 +326,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                         ],
                       ),
                       const Divider(),
+                      // ignore: sized_box_for_whitespace
                       Container(
                         width: double.maxFinite,
                         height: 300,

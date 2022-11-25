@@ -1,10 +1,6 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:riesgo/screens/buscador_receta_screen.dart';
-import 'package:riesgo/screens/profile_screen.dart';
 import 'package:riesgo/screens/recetas_screen.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -21,7 +17,7 @@ class _SearchScreenState extends State<SearchScreen> {
     setState(() {
       isloading = true;
     });
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 5));
     setState(() {
       isloading = false;
     });
