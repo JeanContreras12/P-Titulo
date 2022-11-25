@@ -28,6 +28,7 @@ mixin _$ChatState on _ChatState, Store {
 
   @override
   void refreshChatsForCurrentUser() {
+    // ignore: no_leading_underscores_for_local_identifiers
     final _$actionInfo = _$_ChatStateActionController.startAction(
         name: '_ChatState.refreshChatsForCurrentUser');
     try {

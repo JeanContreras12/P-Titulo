@@ -111,7 +111,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   ),
                 );
               }));
-    } on FirebaseAuthException catch (e) {
+    } on FirebaseAuthException {
       showDialog(
           context: context,
           builder: (BuildContext context) {

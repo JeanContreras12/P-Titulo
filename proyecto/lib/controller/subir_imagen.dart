@@ -35,6 +35,7 @@ class _PhotoUploadState extends State<PhotoUpload> {
 
   Future getImage() async {
     var tempImage =
+        // ignore: invalid_use_of_visible_for_testing_member
         await ImagePicker.platform.getImage(source: ImageSource.gallery);
     setState(() {
       sampleImage = File(tempImage!.path);

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, avoid_print, avoid_function_literals_in_foreach_calls
+
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -67,7 +69,6 @@ class _EditProfilState extends State<EditProfil> {
       }
       await FirestoreMethods()
           .ChangeProfilePic(uid, photoUrl, nombre, description);
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       setState(() {
         isLoading = false;

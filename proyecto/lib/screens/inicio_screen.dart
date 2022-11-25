@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
@@ -126,6 +128,7 @@ class _InicioScreenState extends State<InicioScreen> {
     await FirebaseMessaging.instance.getToken().then((token) {
       setState(() {
         mtoken = token;
+        // ignore: avoid_print
         print("El token es : $mtoken");
       });
     });

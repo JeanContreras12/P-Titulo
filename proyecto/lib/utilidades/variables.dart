@@ -6,9 +6,9 @@ import 'package:riesgo/screens/postear_screen.dart';
 import 'package:riesgo/screens/profile_screen.dart';
 
 var homeScreenItems = [
-  FeedScreen(),
-  SearchScreen(),
+  const FeedScreen(),
+  const SearchScreen(),
   PostearScreen(uid: FirebaseAuth.instance.currentUser!.uid),
-  Text('hola4'),
+  const Text('hola4'),
   ProfileScreen(uid: FirebaseAuth.instance.currentUser!.uid),
 ];
